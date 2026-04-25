@@ -1,0 +1,28 @@
+{
+  "id": "02",
+  "concept": "distinct",
+  "brief": {
+    "speaker": "oldrich",
+    "text": "How many different mouths have I served this year? Not how many cups — how many people. I am not a charity."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "blank",   "id": "expr", "mode": "typed", "placeholder": "count distinct patrons" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "visits" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT COUNT(DISTINCT patron_id) FROM visits",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Oldrich: 'You're counting cups, not faces. Use DISTINCT.'" },
+    { "when": "error",            "text": "Oldrich: 'You wrote it wrong. The shape is COUNT — open paren — DISTINCT — column — close paren.'" },
+    { "when": "default",          "text": "Oldrich: 'Count distinct patrons. Just one number.'" }
+  ],
+  "success": {
+    "speaker": "oldrich",
+    "text": "Oldrich nods slowly. 'More than I thought. Some I'd have to think hard to picture.'"
+  }
+}

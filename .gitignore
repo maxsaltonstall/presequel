@@ -1,0 +1,9 @@
+.superpowers/
+node_modules/
+*.duckdb
+*.duckdb.wal
+.DS_Store
+test-results/
+playwright-report/
+.env
+test-output.txt

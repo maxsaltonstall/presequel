@@ -1,0 +1,31 @@
+{
+  "id": "04",
+  "concept": "limit",
+  "brief": {
+    "speaker": "carol",
+    "text": "Twenty rows is small but later you'll query tables with millions. LIMIT caps the result. Pull just the first three clients by id."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "id, name" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "clients" },
+    { "type": "keyword", "text": "LIMIT" },
+    { "type": "blank",   "id": "n",    "mode": "dropdown",
+      "options": ["3", "10", "20", "100"] }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT id, name FROM clients LIMIT 3",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'Too many rows. LIMIT is an upper bound — did you pick 3?'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Not enough. I asked for three.'" },
+    { "when": "default",          "text": "Carol: 'LIMIT controls how many rows come back. Pick 3.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Three rows. When you're exploring a huge dataset, that's how you avoid accidentally dumping a million results to the screen."
+  }
+}

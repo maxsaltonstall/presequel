@@ -1,0 +1,37 @@
+{
+  "id": "02",
+  "concept": "order-by",
+  "brief": {
+    "speaker": "gladys",
+    "text": "The five biggest tabs. Largest first. The regulars with the deepest pockets — or the newcomers with the shortest judgment."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "name, visit_date, tab_cents" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "patrons" },
+    { "type": "keyword", "text": "ORDER BY" },
+    { "type": "blank",   "id": "col",  "mode": "word_bank",
+      "options": ["tab_cents", "visit_date", "party_size"] },
+    { "type": "blank",   "id": "dir",  "mode": "word_bank",
+      "options": ["DESC", "ASC"] },
+    { "type": "keyword", "text": "LIMIT" },
+    { "type": "blank",   "id": "n",    "mode": "word_bank",
+      "options": ["5", "50", "500"] }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT name, visit_date, tab_cents FROM patrons ORDER BY tab_cents DESC LIMIT 5",
+    "order_sensitive": true
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Gladys: 'Too many. I asked for the top five. Pick the right number.'" },
+    { "when": "wrong_count_low",  "text": "Gladys: 'Too few. Top five exactly — not one, not fifty.'" },
+    { "when": "different-values", "text": "Gladys: 'Right count, wrong order. Biggest tab first — that's DESC.'" },
+    { "when": "default",          "text": "Gladys: 'Biggest tabs first, top five.'" }
+  ],
+  "success": {
+    "speaker": "gladys",
+    "text": "Look at that. Number one — 3400 cents. That's thirty four dollars. One party of one. On March 14. Someone drank a month's rent in a night. And I don't know their name."
+  }
+}

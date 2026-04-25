@@ -1,0 +1,35 @@
+{
+  "id": "06",
+  "concept": "comparison-operators",
+  "brief": {
+    "speaker": "pharaoh",
+    "text": "Show me every record NOT from this Hemiunu. My remaining scribes are trusted. I want their names on a papyrus for the vizier."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "overseer, year" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "granary" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "text",    "text": "overseer" },
+    { "type": "blank",   "id": "op",   "mode": "dropdown",
+      "options": ["!=", "=", "<"] },
+    { "type": "blank",   "id": "val",  "mode": "dropdown",
+      "options": ["'Hemiunu'", "'Weni'", "Hemiunu"] }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT overseer, year FROM granary WHERE overseer != 'Hemiunu'",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Pharaoh: 'Hemiunu's entry must be excluded. All 60 rows is too many.'" },
+    { "when": "wrong_count_low",  "text": "Pharaoh: 'Too few. You are excluding too much — only Hemiunu goes.'" },
+    { "when": "error",            "text": "Pharaoh: 'Text values in quotes. Hemiunu is a name, not a column.'" },
+    { "when": "default",          "text": "Pharaoh: 'NOT EQUAL. Filter out only Hemiunu.'" }
+  ],
+  "success": {
+    "speaker": "pharaoh",
+    "text": "59 trusted entries. The vizier will speak to Hemiunu himself. Your work has been... illuminating. Go."
+  }
+}

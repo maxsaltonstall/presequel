@@ -1,0 +1,31 @@
+{
+  "id": "02",
+  "concept": "select",
+  "brief": {
+    "speaker": "carol",
+    "text": "Now pull names and eras together. Separate columns with commas in the SELECT list."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "blank",   "id": "c1",  "mode": "dropdown",
+      "options": ["name", "id", "engagement"] },
+    { "type": "text",    "text": "," },
+    { "type": "blank",   "id": "c2",  "mode": "dropdown",
+      "options": ["era", "status", "year_started"] },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "clients" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT name, era FROM clients",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "error",   "text": "Carol: 'Watch the comma between columns. SELECT a, b — not SELECT a b.'" },
+    { "when": "default", "text": "Carol: 'I wanted names AND eras. Check your two dropdowns.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "There we go. Every column you pull is a reminder that somebody, somewhere, had to type this in."
+  }
+}

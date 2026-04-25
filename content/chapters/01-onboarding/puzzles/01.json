@@ -1,0 +1,31 @@
+{
+  "id": "01",
+  "concept": "select",
+  "brief": {
+    "speaker": "carol",
+    "text": "First task: pull just the names from the client ledger. That's it. No filtering, no sorting. Get used to the shape."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "blank",   "id": "col",  "mode": "dropdown",
+      "options": ["name", "id", "era", "engagement"] },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "blank",   "id": "tbl",  "mode": "dropdown",
+      "options": ["clients", "engagements", "eras"] }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT name FROM clients",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'You pulled more than names — are you sure you picked the right column?'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Not enough rows. Check your table name?'" },
+    { "when": "error",            "text": "Carol: 'The archive threw an error. Did you pick values that exist?'" },
+    { "when": "default",          "text": "Carol: 'Close, but not quite. I asked for names from the clients table.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Good. Twenty clients, one suspiciously dated — you saw '???' at the bottom, right? We'll come back to that. Next."
+  }
+}

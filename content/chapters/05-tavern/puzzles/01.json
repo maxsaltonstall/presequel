@@ -1,0 +1,31 @@
+{
+  "id": "01",
+  "concept": "select",
+  "brief": {
+    "speaker": "oldrich",
+    "text": "Every pour. Every coin. A year of it. Look at the book before you ask me anything."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "blank",   "id": "cols", "mode": "typed", "placeholder": "columns to show" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "blank",   "id": "tbl",  "mode": "typed", "placeholder": "table name" },
+    { "type": "keyword", "text": "LIMIT" },
+    { "type": "text",    "text": "10" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT visit_id, patron_id, visit_date, tab_groschen FROM visits LIMIT 10",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Oldrich grunts. 'I asked for ten lines, not the whole year.'" },
+    { "when": "wrong_count_low",  "text": "Oldrich frowns. 'Not enough. Show me ten.'" },
+    { "when": "error",            "text": "Oldrich peers over your shoulder. 'You wrote that wrong. Try again. The table is called *visits*.'" },
+    { "when": "default",          "text": "Oldrich: 'Pick the columns you want, name the table, ten rows. That's all I asked.'" }
+  ],
+  "success": {
+    "speaker": "oldrich",
+    "text": "Oldrich grunts. 'Now you've seen it. Ask me what you want.'"
+  }
+}

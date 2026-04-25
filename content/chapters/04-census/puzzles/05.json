@@ -1,0 +1,41 @@
+{
+  "id": "05",
+  "concept": "group-by",
+  "brief": {
+    "speaker": "grayson",
+    "text": "Workforce by borough. One row per borough with a count. Sorted so the largest borough is at the top. This is the chart they want to see."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "blank",   "id": "col1", "mode": "word_bank",
+      "options": ["borough", "occupation", "sex"] },
+    { "type": "text",    "text": "," },
+    { "type": "blank",   "id": "agg",  "mode": "word_bank",
+      "options": ["COUNT(*)", "SUM(*)", "AVG(*)"] },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "census_1890" },
+    { "type": "keyword", "text": "GROUP BY" },
+    { "type": "blank",   "id": "grp",  "mode": "word_bank",
+      "options": ["borough", "occupation", "sex"] },
+    { "type": "keyword", "text": "ORDER BY" },
+    { "type": "blank",   "id": "ord",  "mode": "word_bank",
+      "options": ["COUNT(*)", "borough", "AVG(age)"] },
+    { "type": "blank",   "id": "dir",  "mode": "word_bank",
+      "options": ["DESC", "ASC"] }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT borough, COUNT(*) FROM census_1890 GROUP BY borough ORDER BY COUNT(*) DESC",
+    "order_sensitive": true
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Grayson: 'Too many rows. Are you grouping correctly?'" },
+    { "when": "different-values", "text": "Grayson: 'Right structure, wrong order or columns. Boroughs grouped, COUNT(*) ordered descending.'" },
+    { "when": "error",            "text": "Grayson: 'Every non-aggregate in SELECT must appear in GROUP BY.'" },
+    { "when": "default",          "text": "Grayson: 'SELECT borough, COUNT — GROUP BY borough — ORDER BY COUNT descending.'" }
+  ],
+  "success": {
+    "speaker": "grayson",
+    "text": "Manhattan leads. Brooklyn second. Bronx, Queens, Staten Island trailing. And... there's a sixth row. A null borough. One resident. How? I do not sign off on data anomalies. Find out who that is."
+  }
+}

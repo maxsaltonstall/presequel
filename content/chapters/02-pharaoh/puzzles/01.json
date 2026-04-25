@@ -1,0 +1,36 @@
+{
+  "id": "01",
+  "concept": "where",
+  "brief": {
+    "speaker": "pharaoh",
+    "text": "Find every delivery logged by the overseer named Weni. He has been my most reliable man for a decade. Let us see his work."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "overseer, year, amount" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "granary" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "blank",   "id": "col",  "mode": "dropdown",
+      "options": ["overseer", "silo", "year"] },
+    { "type": "blank",   "id": "op",   "mode": "dropdown",
+      "options": ["=", ">", "<"] },
+    { "type": "blank",   "id": "val",  "mode": "dropdown",
+      "options": ["'Weni'", "'Hemiunu'", "9"] }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT overseer, year, amount FROM granary WHERE overseer = 'Weni'",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Pharaoh: 'Too many entries. Weni was one man, not many.'" },
+    { "when": "wrong_count_low",  "text": "Pharaoh: 'That cannot be all of Weni's work. Check your comparison.'" },
+    { "when": "error",            "text": "Pharaoh: 'Your scribes are baffled. Text values need single quotes.'" },
+    { "when": "default",          "text": "Pharaoh: 'The filter must find the overseer whose name is Weni.'" }
+  ],
+  "success": {
+    "speaker": "pharaoh",
+    "text": "Weni's records. Year after year. A good man. You may proceed."
+  }
+}

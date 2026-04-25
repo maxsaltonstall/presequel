@@ -1,0 +1,15 @@
+sequel.maxsaltonstall.com {
+    encode gzip
+    reverse_proxy 127.0.0.1:5173
+
+    @static {
+        path *.css *.js *.svg *.md *.parquet *.csv
+    }
+    header @static Cache-Control "public, max-age=3600"
+    header / Cache-Control "public, max-age=60"
+
+    log {
+        output file /var/log/caddy/access.log
+        format json
+    }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "01",
+  "concept": "order-by",
+  "brief": {
+    "speaker": "gladys",
+    "text": "Here's my schedule, kid. Show me every shift in order, earliest first. Let me see the rhythm of the place before we go looking for what's wrong."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "staff_name, shift_date" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "shifts" },
+    { "type": "keyword", "text": "ORDER BY" },
+    { "type": "blank",   "id": "col",  "mode": "word_bank",
+      "options": ["shift_date", "staff_name", "role"] },
+    { "type": "blank",   "id": "dir",  "mode": "word_bank",
+      "options": ["ASC", "DESC"] }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT staff_name, shift_date FROM shifts ORDER BY shift_date ASC",
+    "order_sensitive": true
+  },
+  "hints": [
+    { "when": "different-values", "text": "Gladys: 'Order's off. Check which column you're sorting by and which direction.'" },
+    { "when": "error",            "text": "Gladys: 'SQL spat an error. Both slots need to be filled before you can run.'" },
+    { "when": "default",          "text": "Gladys: 'Ascending means earliest first. Which column has the dates?'" }
+  ],
+  "success": {
+    "speaker": "gladys",
+    "text": "That's the rhythm. Louise, Frank, Mavis, Esther. Every few nights. A tight little crew."
+  }
+}

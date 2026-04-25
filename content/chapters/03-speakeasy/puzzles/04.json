@@ -1,0 +1,34 @@
+{
+  "id": "04",
+  "concept": "is-null",
+  "brief": {
+    "speaker": "gladys",
+    "text": "Sometimes the guestbook entry is illegible. The ink was smudged or the hand was shaking. Those show up as NULL in my digitized version. Find every one of them."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "id, visit_date, tab_cents" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "patrons" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "blank",   "id": "col",  "mode": "word_bank",
+      "options": ["name", "visit_date", "tab_cents"] },
+    { "type": "blank",   "id": "op",   "mode": "word_bank",
+      "options": ["IS NULL", "IS NOT NULL", "= NULL"] }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT id, visit_date, tab_cents FROM patrons WHERE name IS NULL",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Gladys: 'Too many. IS NULL — not IS NOT NULL.'" },
+    { "when": "wrong_count_low",  "text": "Gladys: 'Too few. Something is off.'" },
+    { "when": "error",            "text": "Gladys: 'Can't use equals with NULL. SQL has a special IS NULL operator for it.'" },
+    { "when": "default",          "text": "Gladys: 'The name column, IS NULL. That one.'" }
+  ],
+  "success": {
+    "speaker": "gladys",
+    "text": "One row. March 14. 3400 cents. A party of one with no legible name. That's the night Louise stopped coming to work. You see it now. I see it now."
+  }
+}

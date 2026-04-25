@@ -1,0 +1,43 @@
+{
+  "id": "06",
+  "concept": "group-by",
+  "brief": {
+    "speaker": "grayson",
+    "text": "Final deliverable. For each borough: the count, the average age, and the oldest resident. One query. Ordered so Manhattan leads. Include the anomalous NULL bucket — investors deserve transparency."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "borough," },
+    { "type": "blank",   "id": "a1",  "mode": "word_bank",
+      "options": ["COUNT(*)", "SUM(*)", "MAX(*)"] },
+    { "type": "text",    "text": "," },
+    { "type": "blank",   "id": "a2",  "mode": "word_bank",
+      "options": ["AVG(age)", "MIN(age)", "SUM(age)"] },
+    { "type": "text",    "text": "," },
+    { "type": "blank",   "id": "a3",  "mode": "word_bank",
+      "options": ["MAX(age)", "MIN(age)", "COUNT(age)"] },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "census_1890" },
+    { "type": "keyword", "text": "GROUP BY" },
+    { "type": "text",    "text": "borough" },
+    { "type": "keyword", "text": "ORDER BY" },
+    { "type": "blank",   "id": "ord", "mode": "word_bank",
+      "options": ["COUNT(*)", "AVG(age)", "borough"] },
+    { "type": "blank",   "id": "dir", "mode": "word_bank",
+      "options": ["DESC", "ASC"] }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT borough, COUNT(*), AVG(age), MAX(age) FROM census_1890 GROUP BY borough ORDER BY COUNT(*) DESC",
+    "order_sensitive": true
+  },
+  "hints": [
+    { "when": "different-values", "text": "Grayson: 'Structure's right, some column's wrong. Count, average age, max age. In that order. Ordered by count, largest first.'" },
+    { "when": "error",            "text": "Grayson: 'Syntax. Commas between aggregates.'" },
+    { "when": "default",          "text": "Grayson: 'Six rows. Five boroughs plus the anomaly. Each row: count, avg age, max age.'" }
+  ],
+  "success": {
+    "speaker": "grayson",
+    "text": "Beautiful. Thursday's pitch is made. The NULL row, though — one resident, age 43, alone in their own bucket. Surname Hemiunu. I have... heard this name recently. From a colleague. In very different circumstances. Take your fee, clerk. And when you see your superior, tell her we should speak."
+  }
+}

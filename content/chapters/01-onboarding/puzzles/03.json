@@ -1,0 +1,28 @@
+{
+  "id": "03",
+  "concept": "select",
+  "brief": {
+    "speaker": "carol",
+    "text": "Sometimes you want the whole row — every column. Use an asterisk for that. It's noisy but useful when you're exploring."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "blank",   "id": "wild", "mode": "dropdown",
+      "options": ["*", "all", "everything"] },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "clients" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT * FROM clients",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "error",   "text": "Carol: 'Only one of those is real SQL — the asterisk.'" },
+    { "when": "default", "text": "Carol: 'Not quite. Star means star.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Yeah. That '???' row is really weird. Okay — more SQL, then we can worry about it."
+  }
+}

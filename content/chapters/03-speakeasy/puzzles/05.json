@@ -1,0 +1,35 @@
+{
+  "id": "05",
+  "concept": "string-functions",
+  "brief": {
+    "speaker": "gladys",
+    "text": "I want the length of every name in my book. Character count. Longer names are usually the full-commas-for-formality types. Short ones are nicknames or regulars. Compute the length of the name column alongside the name itself. Exclude the NULL entry."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "blank",   "id": "fn",  "mode": "word_bank",
+      "options": ["LENGTH(name)", "UPPER(name)", "LEFT(name, 3)"] },
+    { "type": "text",    "text": ", name" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "patrons" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "text",    "text": "name" },
+    { "type": "blank",   "id": "op",  "mode": "word_bank",
+      "options": ["IS NOT NULL", "IS NULL", "= ''"] }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT LENGTH(name), name FROM patrons WHERE name IS NOT NULL",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Gladys: 'Too many rows — did you include the NULL row? We want to exclude it.'" },
+    { "when": "wrong_count_low",  "text": "Gladys: 'Too few. All legible entries.'" },
+    { "when": "different-values", "text": "Gladys: 'Values don't match. Are you computing the LENGTH or something else?'" },
+    { "when": "default",          "text": "Gladys: 'LENGTH of the name column. And exclude NULLs.'" }
+  ],
+  "success": {
+    "speaker": "gladys",
+    "text": "Most names hover around 10 to 12 characters. First initial, comma, last name. Standard guestbook protocol. Now for the hard one."
+  }
+}

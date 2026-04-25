@@ -1,0 +1,35 @@
+{
+  "id": "04",
+  "concept": "min-max",
+  "brief": {
+    "speaker": "grayson",
+    "text": "The age profile. Give me the minimum, maximum, and average age of the workforce. Three numbers. One query."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "blank",   "id": "a1",  "mode": "word_bank",
+      "options": ["MIN(age)", "MAX(age)", "SUM(age)"] },
+    { "type": "text",    "text": "," },
+    { "type": "blank",   "id": "a2",  "mode": "word_bank",
+      "options": ["MAX(age)", "MIN(age)", "AVG(age)"] },
+    { "type": "text",    "text": "," },
+    { "type": "blank",   "id": "a3",  "mode": "word_bank",
+      "options": ["AVG(age)", "COUNT(age)", "MIN(age)"] },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "census_1890" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT MIN(age), MAX(age), AVG(age) FROM census_1890",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "different-values", "text": "Grayson: 'Values don't match. Min, max, and average — in some order.'" },
+    { "when": "error",            "text": "Grayson: 'Three aggregate expressions separated by commas.'" },
+    { "when": "default",          "text": "Grayson: 'Pick MIN, MAX, and AVG — each on the age column.'" }
+  ],
+  "success": {
+    "speaker": "grayson",
+    "text": "Youngest a newborn. Oldest in the nineties. Average around thirty. The investors like numbers."
+  }
+}

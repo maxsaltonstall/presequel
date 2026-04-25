@@ -1,0 +1,44 @@
+{
+  "id": "06",
+  "concept": "string-functions",
+  "brief": {
+    "speaker": "gladys",
+    "text": "Last one. I want the names of anyone who was here on March 14 — the night Louise disappeared. Ordered by tab size, largest first. Legible names only. If the biggest spender that night has a name, I want to see it at the top. If they don't, I want to know that too."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "name, tab_cents" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "patrons" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "blank",   "id": "col",   "mode": "word_bank",
+      "options": ["visit_date", "name", "tab_cents"] },
+    { "type": "blank",   "id": "op",    "mode": "word_bank",
+      "options": ["=", "!=", "<"] },
+    { "type": "blank",   "id": "val",   "mode": "word_bank",
+      "options": ["DATE '1927-03-14'", "'1927-03-14'", "1927"] },
+    { "type": "text",    "text": "AND name" },
+    { "type": "blank",   "id": "nullop","mode": "word_bank",
+      "options": ["IS NOT NULL", "IS NULL", "= ''"] },
+    { "type": "keyword", "text": "ORDER BY" },
+    { "type": "text",    "text": "tab_cents" },
+    { "type": "blank",   "id": "dir",   "mode": "word_bank",
+      "options": ["DESC", "ASC"] }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT name, tab_cents FROM patrons WHERE visit_date = DATE '1927-03-14' AND name IS NOT NULL ORDER BY tab_cents DESC",
+    "order_sensitive": true
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Gladys: 'You're including the NULL row. Filter it out too.'" },
+    { "when": "wrong_count_low",  "text": "Gladys: 'Not enough patrons. Check the date filter.'" },
+    { "when": "different-values", "text": "Gladys: 'Right people, wrong order. Biggest tab first.'" },
+    { "when": "error",            "text": "Gladys: 'Dates need the DATE prefix and single quotes.'" },
+    { "when": "default",          "text": "Gladys: 'March 14, legible names only, tabs descending.'" }
+  ],
+  "success": {
+    "speaker": "gladys",
+    "text": "Six people with names. Harriman, Dalton, Ingram, Pinto, McCready, Lawson. Regulars. And one NULL, which you already found. Someone walked in that night with no name for me to write. Drank 34 dollars. And Louise never came back. You've done your job, kid. The rest is mine to take to the coppers."
+  }
+}

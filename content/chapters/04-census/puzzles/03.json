@@ -1,0 +1,28 @@
+{
+  "id": "03",
+  "concept": "sum-avg",
+  "brief": {
+    "speaker": "grayson",
+    "text": "Total wages paid across this workforce. All of it. In cents, because that's how my accountants like it."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "blank",   "id": "agg",  "mode": "word_bank",
+      "options": ["SUM(annual_wage_cents)", "AVG(annual_wage_cents)", "COUNT(annual_wage_cents)"] },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "census_1890" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT SUM(annual_wage_cents) FROM census_1890",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "different-values", "text": "Grayson: 'That's not the total. SUM adds. AVG averages.'" },
+    { "when": "default",          "text": "Grayson: 'SUM. Of the wage column. Single row, single number.'" }
+  ],
+  "success": {
+    "speaker": "grayson",
+    "text": "Nearly two hundred million cents a year. The economy of a small city. Good."
+  }
+}

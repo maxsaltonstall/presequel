@@ -1,0 +1,34 @@
+{
+  "id": "04",
+  "concept": "comparison-operators",
+  "brief": {
+    "speaker": "pharaoh",
+    "text": "My later years — year 5 onward. Include year 5 itself. I would see the whole of that second half."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "overseer, year" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "granary" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "text",    "text": "year" },
+    { "type": "blank",   "id": "op",   "mode": "dropdown",
+      "options": [">=", ">", "="] },
+    { "type": "blank",   "id": "val",  "mode": "dropdown",
+      "options": ["5", "4", "6"] }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT overseer, year FROM granary WHERE year >= 5",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Pharaoh: 'Too many years. Include year 5, not year 4.'" },
+    { "when": "wrong_count_low",  "text": "Pharaoh: 'Year 5 itself must be included — check your operator.'" },
+    { "when": "default",          "text": "Pharaoh: 'The operator that means greater OR equal is the one you want.'" }
+  ],
+  "success": {
+    "speaker": "pharaoh",
+    "text": "The weight of a decade. Now — the strange small entries."
+  }
+}

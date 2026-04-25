@@ -1,0 +1,18 @@
+{
+  "id": "03-speakeasy",
+  "ordinal": 3,
+  "title": "The Speakeasy Ledger",
+  "era": "Chicago, 1927",
+  "client": {
+    "name": "Gladys Vance",
+    "portrait": "gladys.svg",
+    "voice": "tired, shrewd, chain-smoking"
+  },
+  "boss_intro": "Carol slides a ledger across your desk. 'Gladys Vance. Runs The Hemlock Room. Her best bartender stopped showing up and she wants to know why. We're getting paid in gin. The mechanic shift: no more dropdowns. You pick tokens from a word bank and place them. Same SQL. Different hands.'",
+  "concepts_introduced": ["order-by", "like", "is-null", "string-functions"],
+  "concepts_reviewed": ["where", "comparison-operators"],
+  "mechanic_mode": "word_bank",
+  "arc_hook": "Louise Hayes stops working after March 14. A patron that night left no name in the guestbook — the entry is NULL. The shape of that NULL is the shape of what happened.",
+  "puzzle_ids": ["01", "02", "03", "04", "05", "06"],
+  "outro": "Gladys pours you a drink. 'You found the shape of it, I think. Someone came in that night who shouldn't have.' Back at the office, Carol reads your notes twice. She says nothing for a long moment. Then: 'The name fragment. The one you pulled from the illegible entry. Say it out loud.' You say it. She sits down."
+}

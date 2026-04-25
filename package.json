@@ -1,0 +1,24 @@
+{
+  "name": "presequel",
+  "version": "0.1.0",
+  "description": "Chrono Consulting — a SQL learning game",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --test tests/*.test.js",
+    "test:e2e": "playwright test",
+    "validate-content": "node scripts/validate-content.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@duckdb/node-api": "^1.5.2-r.1",
+    "dd-trace": "^5.0.0",
+    "marked": "^14.0.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0"
+  }
+}

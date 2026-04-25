@@ -1,0 +1,35 @@
+{
+  "id": "03",
+  "concept": "like",
+  "brief": {
+    "speaker": "gladys",
+    "text": "Pull every shift Louise worked. Her last name's Hayes but use a pattern — I want the whole name, first and last. Start with 'Louise' and a wildcard."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "staff_name, shift_date" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "shifts" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "blank",   "id": "col",  "mode": "word_bank",
+      "options": ["staff_name", "role", "shift_date"] },
+    { "type": "blank",   "id": "op",   "mode": "word_bank",
+      "options": ["LIKE", "=", "!="] },
+    { "type": "blank",   "id": "pat",  "mode": "word_bank",
+      "options": ["'Louise%'", "'%Louise%'", "'Louise'"] }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT staff_name, shift_date FROM shifts WHERE staff_name LIKE 'Louise%'",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_low",  "text": "Gladys: 'Zero rows? The pattern needs a wildcard — the percent sign.'" },
+    { "when": "error",            "text": "Gladys: 'Use LIKE with a pattern, not equals.'" },
+    { "when": "default",          "text": "Gladys: 'LIKE plus a pattern that starts with Louise followed by anything.'" }
+  ],
+  "success": {
+    "speaker": "gladys",
+    "text": "Twenty shifts. Through February. Into March. Her last one was March 14. After that, nothing. She's gone."
+  }
+}

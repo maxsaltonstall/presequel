@@ -1,0 +1,18 @@
+{
+  "id": "04-census",
+  "ordinal": 4,
+  "title": "The Robber Baron's Census",
+  "era": "NYC, 1890",
+  "client": {
+    "name": "Cornelius Grayson",
+    "portrait": "grayson.svg",
+    "voice": "imperious, impatient, monocle-energy"
+  },
+  "boss_intro": "Carol: 'Cornelius Grayson. Industrialist. He wants workforce stats by borough for an investor pitch Thursday. The data is a three-thousand-row census slice — real scale — so you're going to learn aggregation or die trying. COUNT, SUM, AVG, MIN, MAX, GROUP BY. Same word-bank mechanic.'",
+  "concepts_introduced": ["count", "sum-avg", "min-max", "group-by"],
+  "concepts_reviewed": ["where", "is-null", "order-by"],
+  "mechanic_mode": "word_bank",
+  "arc_hook": "A workforce breakdown by borough surfaces a group of 1 — a resident with no borough recorded. Surname: Hemiunu. That's three timelines.",
+  "puzzle_ids": ["01", "02", "03", "04", "05", "06"],
+  "outro": "Grayson gets his charts. The investors will be satisfied. Carol reads your working papers and sits very still. 'Old Kingdom Egypt. 1920s Chicago. 1890 New York. Three different Hemiunus. All with wrong data in the wrong places. That's not a coincidence, kid. That's a pattern.' She picks up the phone. 'Get me the CEO.'"
+}

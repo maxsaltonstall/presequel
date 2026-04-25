@@ -1,0 +1,33 @@
+{
+  "id": "04",
+  "concept": "having",
+  "brief": {
+    "speaker": "oldrich",
+    "text": "Just the ones I'd call regulars. Twenty visits or more. Less than that, they're strangers to me."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "patron_id, COUNT(*) AS visits" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "visits" },
+    { "type": "keyword", "text": "GROUP BY" },
+    { "type": "text",    "text": "patron_id" },
+    { "type": "keyword", "text": "HAVING" },
+    { "type": "blank",   "id": "cond", "mode": "typed", "placeholder": "condition on the count" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT patron_id, COUNT(*) AS visits FROM visits GROUP BY patron_id HAVING COUNT(*) >= 20",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Oldrich: 'Too many. The cutoff is twenty. Less than that, they're not regulars.'" },
+    { "when": "wrong_count_low",  "text": "Oldrich: 'You've cut it too narrow. Twenty *or more*. Include twenty itself.'" },
+    { "when": "error",            "text": "Oldrich: 'HAVING needs an aggregate condition. COUNT(*) compared to a number.'" },
+    { "when": "default",          "text": "Oldrich: 'Filter the groups, not the rows. HAVING — not WHERE — for things you've counted.'" }
+  ],
+  "success": {
+    "speaker": "oldrich",
+    "text": "Oldrich runs his finger down the list. 'Seven. By the count, anyway. Six I'd recognize at the well in the morning. The seventh —' He taps a row near the bottom. '— him I count, but I do not know.'"
+  }
+}

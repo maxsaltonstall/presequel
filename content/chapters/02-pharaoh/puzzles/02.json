@@ -1,0 +1,36 @@
+{
+  "id": "02",
+  "concept": "where",
+  "brief": {
+    "speaker": "pharaoh",
+    "text": "My ninth year of reign. Something... a feeling. Show me every entry from year 9."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "overseer, amount" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "granary" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "blank",   "id": "col",  "mode": "dropdown",
+      "options": ["year", "amount", "overseer"] },
+    { "type": "blank",   "id": "op",   "mode": "dropdown",
+      "options": ["=", ">=", ">"] },
+    { "type": "blank",   "id": "val",  "mode": "dropdown",
+      "options": ["9", "'9'", "19"] }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT overseer, amount FROM granary WHERE year = 9",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Pharaoh: 'Too many years. I asked for only year nine.'" },
+    { "when": "wrong_count_low",  "text": "Pharaoh: 'Not enough. Six scribes logged in year 9. Where are they all?'" },
+    { "when": "error",            "text": "Pharaoh: 'The year is a number. Not a text. Remove the quotes.'" },
+    { "when": "default",          "text": "Pharaoh: 'Filter the granary to exactly year 9. The integer, not the text.'" }
+  ],
+  "success": {
+    "speaker": "pharaoh",
+    "text": "Six entries. Five names I know. And... Hemiunu. I do not know this overseer. A strangely small delivery. Continue."
+  }
+}

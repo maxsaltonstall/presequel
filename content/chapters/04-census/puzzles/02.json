@@ -1,0 +1,28 @@
+{
+  "id": "02",
+  "concept": "count",
+  "brief": {
+    "speaker": "grayson",
+    "text": "How many distinct occupations does this borough support? Investors love that number. Diversity of labor, they call it. Count the unique occupations."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "blank",   "id": "agg",  "mode": "word_bank",
+      "options": ["COUNT(DISTINCT occupation)", "COUNT(occupation)", "COUNT(*)"] },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "census_1890" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT COUNT(DISTINCT occupation) FROM census_1890",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "different-values", "text": "Grayson: 'Close, but you're including NULLs or duplicates. DISTINCT. The word is DISTINCT.'" },
+    { "when": "default",          "text": "Grayson: 'Distinct occupations. Not all three-thousand rows.'" }
+  ],
+  "success": {
+    "speaker": "grayson",
+    "text": "Twenty-five distinct trades. Impressive number for a pitch. Put it in the deck."
+  }
+}

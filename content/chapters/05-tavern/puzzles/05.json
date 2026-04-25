@@ -1,0 +1,34 @@
+{
+  "id": "05",
+  "concept": "date-functions",
+  "brief": {
+    "speaker": "oldrich",
+    "text": "Mireska — patron 2, the weaver — comes back like the tide. Show me her visits by month. I'd swear she keeps to a pattern even she doesn't know about."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "blank",   "id": "expr", "mode": "typed", "placeholder": "extract month from date" },
+    { "type": "text",    "text": "AS month, COUNT(*) AS visits" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "visits" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "text",    "text": "patron_id = 2" },
+    { "type": "keyword", "text": "GROUP BY" },
+    { "type": "blank",   "id": "grp", "mode": "typed", "placeholder": "group by what we extracted" },
+    { "type": "keyword", "text": "ORDER BY" },
+    { "type": "text",    "text": "month" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT EXTRACT(MONTH FROM visit_date) AS month, COUNT(*) AS visits FROM visits WHERE patron_id = 2 GROUP BY EXTRACT(MONTH FROM visit_date) ORDER BY month",
+    "order_sensitive": true
+  },
+  "hints": [
+    { "when": "error",   "text": "Oldrich: 'EXTRACT something FROM a date. Look at the reference if you've forgotten the shape.'" },
+    { "when": "default", "text": "Oldrich: 'Pull the month out of every visit_date. Group by the same thing. Count what falls into each.'" }
+  ],
+  "success": {
+    "speaker": "oldrich",
+    "text": "Oldrich studies the numbers. 'Sundays. Always Sundays. After mass. She tells me she's praying for her sister; I think she's praying for herself.'"
+  }
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Chrono Consulting</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="appbar">
+    <div class="brand">Chrono Consulting, Inc.</div>
+    <div class="progress" id="progress-indicator"></div>
+    <button type="button" class="ref-toggle" id="ref-toggle" aria-label="Open reference">📖 Reference</button>
+  </header>
+
+  <main id="main">
+    <section class="dialogue-stream" id="dialogue-stream" aria-live="polite"></section>
+    <section class="puzzle-area" id="puzzle-area"></section>
+    <section class="results-area" id="results-area"></section>
+  </main>
+
+  <aside class="ref-drawer" id="ref-drawer" aria-hidden="true">
+    <header>
+      <h2>Reference</h2>
+      <button type="button" id="ref-close" aria-label="Close reference">×</button>
+    </header>
+    <nav class="ref-nav" id="ref-nav"></nav>
+    <article class="ref-content" id="ref-content"></article>
+  </aside>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

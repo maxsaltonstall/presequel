@@ -1,0 +1,29 @@
+{
+  "id": "01",
+  "concept": "count",
+  "brief": {
+    "speaker": "grayson",
+    "text": "Start with the total, clerk. How many souls are in this census? A number. One number. That's all."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "blank",   "id": "agg",  "mode": "word_bank",
+      "options": ["COUNT(*)", "SUM(*)", "AVG(*)"] },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "blank",   "id": "tbl",  "mode": "word_bank",
+      "options": ["census_1890", "residents", "people"] }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT COUNT(*) FROM census_1890",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "error",   "text": "Grayson: 'Your SQL is nonsense. Use COUNT with a star for the total.'" },
+    { "when": "default", "text": "Grayson: 'Total rows. The aggregate function for that is COUNT.'" }
+  ],
+  "success": {
+    "speaker": "grayson",
+    "text": "Three thousand. A modest borough's worth. Onward."
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "id": "05-tavern",
+  "ordinal": 5,
+  "title": "Oldrich's Repeat Customers",
+  "era": "Prague, 1347",
+  "client": {
+    "name": "Oldrich",
+    "portrait": "oldrich.svg",
+    "voice": "flinty, observant, plague-shadowed"
+  },
+  "boss_intro": "Carol drops a sealed scroll on the desk. 'Bohemia. 1347. Tavern keeper named Oldrich. He thinks his books don't match his memory.' She pauses. 'Worth noting — he doesn't keep his books the way the others did. No forms with neat little boxes. Parchment and a candle and a man who can read. You're going to have to write the queries yourself this time.' She turns to leave, then stops at the doorway. 'He's also asked us to hurry. There's plague in the south. He doesn't know how long he'll have customers.'",
+  "concepts_introduced": ["distinct", "having", "date-functions"],
+  "concepts_reviewed": ["count", "group-by", "where"],
+  "mechanic_mode": "typing",
+  "arc_hook": "Oldrich's most regular customer comes every Wednesday. Same drink. Same five minutes. He hasn't aged in a year of pours. The patron register has a name with no surname and no village.",
+  "puzzle_ids": ["01", "02", "03", "04", "05", "06"],
+  "outro": "Back at Chrono Consulting. Carol reads your working papers, the patron register entry pinned to the top. She doesn't say anything for a while. Then she lays four pages on her desk, side by side. Old Kingdom Egypt. 1920s Chicago. 1890 New York. 1347 Prague. Hemiunu in every one. 'The CEO didn't return my call last week. He won't this week either.' She picks up the phone anyway. 'Pull every chapter's ledger from records. All of them. We're going to put them on the same page.' She hangs up. 'Hope you've been thinking about how to read more than one table at a time.'"
+}

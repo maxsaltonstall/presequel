@@ -1,0 +1,18 @@
+{
+  "id": "01-onboarding",
+  "ordinal": 1,
+  "title": "Onboarding",
+  "era": "Modern-day Chrono Consulting, Inc.",
+  "client": {
+    "name": "Carol",
+    "portrait": "carol.svg",
+    "voice": "wry, tired, weirdly protective"
+  },
+  "boss_intro": "Welcome to Chrono Consulting. I'm Carol — Ops Director, Eisenhower desk and up. Before you touch a client, you'll get to know our own client ledger. It's mostly boring. There's one entry that makes me nervous and I want you to notice it without me telling you.",
+  "concepts_introduced": ["select", "from", "limit"],
+  "concepts_reviewed": [],
+  "mechanic_mode": "dropdown",
+  "arc_hook": "A client record dated 'year 87,000'. Carol waves it off. Probably a data-entry intern.",
+  "puzzle_ids": ["01", "02", "03", "04", "05"],
+  "outro": "Not bad for day one. Go home. Tomorrow you meet Menkaure. He has suspicions."
+}

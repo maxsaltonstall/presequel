@@ -1,0 +1,18 @@
+{
+  "id": "02-pharaoh",
+  "ordinal": 2,
+  "title": "The Pharaoh's Grain Audit",
+  "era": "Old Kingdom Egypt, c. 2530 BCE",
+  "client": {
+    "name": "Pharaoh Menkaure",
+    "portrait": "pharaoh.svg",
+    "voice": "formal, suspicious, slightly paranoid"
+  },
+  "boss_intro": "Carol hands you a papyrus. 'Menkaure again. He swears his granaries are off by a few sacks and he wants us to find out who. The WHERE clause is what you need — it filters rows. I'll stop explaining as you go.'",
+  "concepts_introduced": ["where", "comparison-operators"],
+  "concepts_reviewed": ["select", "from"],
+  "mechanic_mode": "dropdown",
+  "arc_hook": "An overseer named Hemiunu logs one odd entry in year 9. Menkaure fixates on it. You'll fixate on it too.",
+  "puzzle_ids": ["01", "02", "03", "04", "05", "06"],
+  "outro": "Menkaure is satisfied. His scribes will sort out Hemiunu. Carol, back at the office, looks pale: 'That name. Hemiunu. He was on our own client ledger yesterday. Year 4.' She doesn't say more."
+}

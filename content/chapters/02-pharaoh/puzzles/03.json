@@ -1,0 +1,35 @@
+{
+  "id": "03",
+  "concept": "comparison-operators",
+  "brief": {
+    "speaker": "pharaoh",
+    "text": "I would see only the great deliveries. More than two thousand units are significant. Filter for them."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "overseer, year, amount" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "granary" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "blank",   "id": "col",  "mode": "dropdown",
+      "options": ["amount", "year", "id"] },
+    { "type": "blank",   "id": "op",   "mode": "dropdown",
+      "options": [">", "<", "="] },
+    { "type": "blank",   "id": "val",  "mode": "dropdown",
+      "options": ["2000", "200", "20000"] }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT overseer, year, amount FROM granary WHERE amount > 2000",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Pharaoh: 'Too many. 2000 is the threshold — only strictly greater.'" },
+    { "when": "wrong_count_low",  "text": "Pharaoh: 'Too few. 2000 is the threshold, not 20000.'" },
+    { "when": "default",          "text": "Pharaoh: 'Amount must be greater than 2000.'" }
+  ],
+  "success": {
+    "speaker": "pharaoh",
+    "text": "The harvest of kings. Weni. Mereruka. Rahotep. Their work is proof enough."
+  }
+}

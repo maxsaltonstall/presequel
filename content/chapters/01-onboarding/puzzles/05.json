@@ -1,0 +1,35 @@
+{
+  "id": "05",
+  "concept": "select",
+  "brief": {
+    "speaker": "carol",
+    "text": "One more. Pull every column for the row where the name is '???'. I want you to see what I've been worrying about. The blanks are filled with hints — you've got this."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "blank",   "id": "cols", "mode": "dropdown",
+      "options": ["*", "name", "id"] },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "clients" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "text",    "text": "name" },
+    { "type": "blank",   "id": "op",   "mode": "dropdown",
+      "options": ["=", ">", "LIKE"] },
+    { "type": "text",    "text": "'???'" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT * FROM clients WHERE name = '???'",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'I asked for just the one row. Your filter isn't filtering.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Empty. The comparison operator matters here — for text, try =.'" },
+    { "when": "error",            "text": "Carol: 'Syntax trouble. Remember quotes around text values.'" },
+    { "when": "default",          "text": "Carol: 'You want all columns, for the one row where name equals that placeholder.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "There it is. Year 87,000. Engagement 'active.' No era, no nothing. You'll see that row again. For now — go home. Tomorrow: Pharaoh Menkaure, and we learn to filter properly."
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "id": "05",
+  "concept": "comparison-operators",
+  "brief": {
+    "speaker": "pharaoh",
+    "text": "Any delivery of 500 units or fewer. Such quantities are unusual. Find them. Include 500 itself."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "overseer, year, amount" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "granary" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "blank",   "id": "col",  "mode": "dropdown",
+      "options": ["amount", "year", "id"] },
+    { "type": "blank",   "id": "op",   "mode": "dropdown",
+      "options": ["<=", "<", "="] },
+    { "type": "blank",   "id": "val",  "mode": "dropdown",
+      "options": ["500", "50", "5000"] }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT overseer, year, amount FROM granary WHERE amount <= 500",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Pharaoh: 'Far too many. 500 is the ceiling, not 5000.'" },
+    { "when": "wrong_count_low",  "text": "Pharaoh: '500 itself must be included. The operator I want means less OR equal.'" },
+    { "when": "default",          "text": "Pharaoh: 'Anything up to and including 500 units.'" }
+  ],
+  "success": {
+    "speaker": "pharaoh",
+    "text": "One entry. One. Hemiunu. Year 9. 420 units of grain. Who is this man?"
+  }
+}

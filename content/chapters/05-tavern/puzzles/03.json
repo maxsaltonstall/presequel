@@ -1,0 +1,36 @@
+{
+  "id": "03",
+  "concept": "group-by",
+  "brief": {
+    "speaker": "oldrich",
+    "text": "Who do I see the most of? I'd like to know who I owe a cup to. Or who I should be charging more. Top five, most visits first."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "patron_id," },
+    { "type": "blank",   "id": "agg", "mode": "typed", "placeholder": "count of visits" },
+    { "type": "text",    "text": "AS visits" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "visits" },
+    { "type": "keyword", "text": "GROUP BY" },
+    { "type": "blank",   "id": "grp", "mode": "typed", "placeholder": "what to group by" },
+    { "type": "keyword", "text": "ORDER BY" },
+    { "type": "text",    "text": "visits DESC, patron_id" },
+    { "type": "keyword", "text": "LIMIT" },
+    { "type": "text",    "text": "5" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT patron_id, COUNT(*) AS visits FROM visits GROUP BY patron_id ORDER BY visits DESC, patron_id LIMIT 5",
+    "order_sensitive": true
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Oldrich: 'Top five only. I don't need the whole list.'" },
+    { "when": "error",            "text": "Oldrich: 'GROUP BY needs the same column you're not aggregating. patron_id, in this case.'" },
+    { "when": "default",          "text": "Oldrich: 'Count visits per patron. Top five, most visits first.'" }
+  ],
+  "success": {
+    "speaker": "oldrich",
+    "text": "Oldrich nods. 'Pavel. Sounds right. He's been miserable since his wife died — drinks like a fish, leaves like a ghost.'"
+  }
+}

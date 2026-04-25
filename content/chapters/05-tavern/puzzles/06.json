@@ -1,0 +1,33 @@
+{
+  "id": "06",
+  "concept": "having",
+  "brief": {
+    "speaker": "oldrich",
+    "text": "There's one I want you to find for me. He comes in every Wednesday. Every single Wednesday of this whole damned year. Sits at the corner. Drinks one cup. Doesn't talk. Doesn't stay. I've poured for fathers and their sons in this room — I've watched men grow grey at that bench. This one looks the same as the day he walked in. The same. Find me the patron who came on at least fifty different weeks of 1347. Tell me his id. I'll look him up myself."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "patron_id" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "visits" },
+    { "type": "keyword", "text": "GROUP BY" },
+    { "type": "text",    "text": "patron_id" },
+    { "type": "keyword", "text": "HAVING" },
+    { "type": "blank",   "id": "cond", "mode": "typed", "placeholder": "fifty distinct weeks" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT patron_id FROM visits GROUP BY patron_id HAVING COUNT(DISTINCT DATE_TRUNC('week', visit_date)) >= 50",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Oldrich: 'More than one? No. There is exactly one face I see every week. Tighten the threshold.'" },
+    { "when": "wrong_count_low",  "text": "Oldrich: 'You found nobody. There IS one. Distinct *weeks*, not distinct visits.'" },
+    { "when": "error",            "text": "Oldrich: 'COUNT — paren — DISTINCT — DATE_TRUNC of week from visit_date — close — close. Compare it to fifty.'" },
+    { "when": "default",          "text": "Oldrich: 'Count the unique weeks each patron appeared in. Keep only the patron who appeared in at least fifty.'" }
+  ],
+  "success": {
+    "speaker": "oldrich",
+    "text": "Oldrich opens his patron register. He reads the id off your result. He stares at the page for a long moment. He looks up. 'Hemiunu,' he says. 'Just Hemiunu. No surname. No village. He paid in old coin.' He closes the book carefully. 'I don't want to be in this conversation anymore.'"
+  }
+}
