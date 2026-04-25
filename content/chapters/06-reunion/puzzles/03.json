@@ -3,7 +3,7 @@
   "concept": "table-aliases",
   "brief": {
     "speaker": "carol",
-    "text": "Same query as before. But name the engagements table 'e' and the clients table 'c'. Use those aliases everywhere. SQL was designed by people who hated typing."
+    "text": "Same query. But name the engagements table 'e' and the clients table 'c'. Use the aliases everywhere. SQL was designed by people who hated typing and loved one-letter variables. Lean into it."
   },
   "template": [
     { "type": "keyword", "text": "SELECT" },
@@ -28,6 +28,6 @@
   ],
   "success": {
     "speaker": "carol",
-    "text": "Carol nods. 'Better. You'll do this a lot. Get comfortable with it.'"
+    "text": "Carol nods. 'Better. Half the SQL you'll ever write looks like this and is somehow still smug about it.'"
   }
 }

@@ -8,7 +8,7 @@
     "portrait": "carol.svg",
     "voice": "wry, tired, weirdly protective"
   },
-  "boss_intro": "Carol is at the desk when you walk in. The desk is covered in ledgers. Five of them. Old Kingdom, Prague, New York, Chicago, and one binder you don't recognize. 'I had records pull everything. Every chapter we've worked, every engagement we've billed for. The firm has been around longer than I have. The ledgers don't always agree.' She doesn't sit down. 'I want to put them in the same shape. Then I want to see who's in all of them. Try not to flinch.' The mechanic is the same as Oldrich's. Type the queries. The firm doesn't do forms with neat little boxes for its own books either.",
+  "boss_intro": "Carol is at the desk when you walk in. The desk is covered in ledgers. Five of them. Old Kingdom, Prague, New York, Chicago, and one binder you don't recognize. 'I had records pull everything. Every chapter we've worked, every engagement we've billed for. The firm's been around longer than the firm.' She gestures at a stack of carbon paper. 'The ledgers don't always agree. They occasionally don't even agree with themselves.' She doesn't sit down. 'I want to put them in the same shape. Then I want to see who's in all of them. Try not to flinch.' The mechanic is the same as Oldrich's. Type the queries. The firm doesn't do forms with neat little boxes for its own books — that, Carol once observed, is a privilege reserved for clients.",
   "concepts_introduced": ["inner-join", "table-aliases"],
   "concepts_reviewed": ["distinct", "having", "date-functions", "group-by", "where"],
   "mechanic_mode": "typing",

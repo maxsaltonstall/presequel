@@ -3,7 +3,7 @@
   "concept": "select",
   "brief": {
     "speaker": "carol",
-    "text": "Start with our engagement ledger. I want to see the first ten rows. Just so we know what we're looking at."
+    "text": "Start with our engagement ledger. First ten rows. I want to see what we're working with before I get my hopes up."
   },
   "template": [
     { "type": "keyword", "text": "SELECT" },
@@ -26,6 +26,6 @@
   ],
   "success": {
     "speaker": "carol",
-    "text": "Carol nods. 'Right. Era, year, client_id. That id refers to a name on the client roster, but you have to ask the roster for it.'"
+    "text": "Carol nods. 'Right. Era, year, client_id. That id is a number that means a name in another table. Whoever designed this is hopefully retired.'"
   }
 }

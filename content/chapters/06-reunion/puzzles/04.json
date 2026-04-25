@@ -3,7 +3,7 @@
   "concept": "inner-join",
   "brief": {
     "speaker": "carol",
-    "text": "Now show me only the engagements someone flagged. The anomaly_note column is NULL for normal cases. Filter those out. Keep the join, keep the aliases."
+    "text": "Show me the engagements somebody flagged. anomaly_note is NULL for the boring ones. Filter those out — I love a boring engagement, but not today. Keep the join. Keep the aliases."
   },
   "template": [
     { "type": "keyword", "text": "SELECT" },

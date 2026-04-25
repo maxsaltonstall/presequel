@@ -3,7 +3,7 @@
   "concept": "inner-join",
   "brief": {
     "speaker": "carol",
-    "text": "Join the engagements to our client roster on client_id. I want a name next to every engagement, not a number. Use INNER JOIN — the table is chrono_clients, the matching column is client_id on both sides. Take the first ten rows."
+    "text": "Join the engagements to the client roster on client_id. I want names, not numbers. Use INNER JOIN — table on the right is chrono_clients, matching column is client_id on both sides. INNER JOIN sounds intimate. It is not."
   },
   "template": [
     { "type": "keyword", "text": "SELECT" },
@@ -28,6 +28,6 @@
   ],
   "success": {
     "speaker": "carol",
-    "text": "Carol exhales. 'Good. We can read it now.'"
+    "text": "Carol exhales. 'Good. Names next to numbers. Took ninety years and three database migrations to get here, more or less.'"
   }
 }

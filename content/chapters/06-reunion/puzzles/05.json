@@ -3,7 +3,7 @@
   "concept": "inner-join",
   "brief": {
     "speaker": "carol",
-    "text": "Add the third table — era_records. Each engagement has one. The detail column is what someone wrote down at the time. Join on engagement_id. Use 'r' as the alias. Keep the anomaly filter."
+    "text": "Add the third table — era_records. Each engagement has one. The detail column is what someone wrote down at the time, in their handwriting, with a quill in some cases. Join on engagement_id. Use 'r' for the alias. Keep the anomaly filter."
   },
   "template": [
     { "type": "keyword", "text": "SELECT" },
