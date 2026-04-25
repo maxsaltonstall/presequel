@@ -202,6 +202,40 @@ Run through this list manually before declaring Milestone A shippable. Expected 
 - [ ] Drawer shows 11 concepts (the carry-forward set minus LIKE/IS NULL/string-functions, plus DISTINCT, HAVING, Date functions).
 - [ ] DISTINCT, HAVING, Date functions all load and render markdown without error.
 
+## Chapter 6 — The Reunion (typing mode, season finale)
+
+### Boot & navigation
+- [ ] Solving Chapter 5 Puzzle 06 auto-advances to Chapter 6; OR set localStorage state to land directly.
+- [ ] Carol's boss intro renders, mentioning the five ledgers on the desk and the firm being "around longer than the firm."
+- [ ] Progress indicator shows Chapter 6.
+
+### Mechanic — typing (regression)
+- [ ] All Chapter 6 puzzles render text inputs (not dropdowns, not word-bank chips).
+- [ ] Run button is disabled until every blank has at least one character.
+
+### Per-puzzle correctness
+- [ ] **Puzzle 01:** Type `engagement_id, client_id, era, year, anomaly_note` and `chrono_engagements`. Submit. Carol's success copy appears.
+- [ ] **Puzzle 02:** Type `chrono_clients` and `chrono_engagements.client_id = chrono_clients.client_id`. Submit. Result has 10 rows with names attached.
+- [ ] **Puzzle 03:** Type `e.era, e.year, c.name` and `e.client_id = c.client_id`. Submit. Result is 10 rows, same shape as puzzle 02 but using aliases.
+- [ ] **Puzzle 04:** Type `e.anomaly_note IS NOT NULL`. Submit. Result is exactly 9 rows. Carol's success copy mentions the same name appearing five times.
+- [ ] **Puzzle 04 wrong path:** Type `e.anomaly_note != NULL`. Error hint about IS NOT NULL fires.
+- [ ] **Puzzle 05:** Type `era_records r` and `r.engagement_id = e.engagement_id`. Submit. Result is 9 rows with detail and location columns.
+- [ ] **Puzzle 06:** Type `c.name = 'Hemiunu'` and `e.year`. Submit. Result is exactly 5 rows in chronological order; last row is `Chrono HQ` / `2026`. Carol's "in our basement the entire time" line lands.
+- [ ] **Puzzle 06 wrong path:** Type `c.name = 'Hemiunu'` and `e.year DESC`. Different-values hint fires (right rows, wrong order).
+
+### Reference drawer
+- [ ] Drawer shows 13 concepts on Chapter 6, with INNER JOIN and Table aliases at the bottom.
+- [ ] INNER JOIN and Table aliases both load and render markdown without error.
+
+### Outro / Phase 2 stinger
+- [ ] After solving Puzzle 06, the outro fires.
+- [ ] Carol's outro mentions the dead phone lines, the blank dashboards, and pulling the blinds.
+- [ ] The line "Welcome to Phase Two" renders.
+
+### Browser compat
+- [ ] All of the above passes in Chrome.
+- [ ] All of the above passes in Safari.
+
 ## Security spot-check
 - [ ] Devtools: `fetch('/run', { method: 'POST', body: JSON.stringify({ chapter: '01-onboarding', sql: 'DROP TABLE clients' }), headers: { 'Content-Type': 'application/json' }}).then(r=>r.json()).then(console.log)` → `{ error: 'Only SELECT queries are allowed' }`.
 - [ ] Same with `SELECT * FROM read_csv('/etc/hostname')` → error about filesystem access.
