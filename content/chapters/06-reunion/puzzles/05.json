@@ -1,0 +1,37 @@
+{
+  "id": "05",
+  "concept": "inner-join",
+  "brief": {
+    "speaker": "carol",
+    "text": "Add the third table — era_records. Each engagement has one. The detail column is what someone wrote down at the time. Join on engagement_id. Use 'r' as the alias. Keep the anomaly filter."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "e.era, e.year, c.name, r.detail, r.location" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "chrono_engagements e" },
+    { "type": "keyword", "text": "INNER JOIN" },
+    { "type": "text",    "text": "chrono_clients c" },
+    { "type": "keyword", "text": "ON" },
+    { "type": "text",    "text": "e.client_id = c.client_id" },
+    { "type": "keyword", "text": "INNER JOIN" },
+    { "type": "blank",   "id": "third", "mode": "typed", "placeholder": "third table with alias" },
+    { "type": "keyword", "text": "ON" },
+    { "type": "blank",   "id": "cond",  "mode": "typed", "placeholder": "match on engagement_id" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "text",    "text": "e.anomaly_note IS NOT NULL" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT e.era, e.year, c.name, r.detail, r.location FROM chrono_engagements e INNER JOIN chrono_clients c ON e.client_id = c.client_id INNER JOIN era_records r ON r.engagement_id = e.engagement_id WHERE e.anomaly_note IS NOT NULL",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "error",   "text": "Carol: 'Second join takes era_records — alias it r. Match r.engagement_id to e.engagement_id.'" },
+    { "when": "default", "text": "Carol: 'INNER JOIN era_records r ON r.engagement_id = e.engagement_id. Same shape as the first join.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Carol slides her finger across the new columns. 'Saqqara. Mala Strana. The Hemlock Room. Census three thousand.' She pauses on a fifth detail. 'Internal.' She doesn't comment further. 'Pull just his rows next, oldest first.'"
+  }
+}

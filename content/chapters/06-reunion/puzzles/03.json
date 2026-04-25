@@ -1,0 +1,33 @@
+{
+  "id": "03",
+  "concept": "table-aliases",
+  "brief": {
+    "speaker": "carol",
+    "text": "Same query as before. But name the engagements table 'e' and the clients table 'c'. Use those aliases everywhere. SQL was designed by people who hated typing."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "blank",   "id": "cols", "mode": "typed", "placeholder": "use the aliases" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "chrono_engagements e" },
+    { "type": "keyword", "text": "INNER JOIN" },
+    { "type": "text",    "text": "chrono_clients c" },
+    { "type": "keyword", "text": "ON" },
+    { "type": "blank",   "id": "cond", "mode": "typed", "placeholder": "join condition with aliases" },
+    { "type": "keyword", "text": "LIMIT" },
+    { "type": "text",    "text": "10" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT e.era, e.year, c.name FROM chrono_engagements e INNER JOIN chrono_clients c ON e.client_id = c.client_id LIMIT 10",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "error",   "text": "Carol: 'Once an alias is defined, the long table name doesn''t work anymore. e.era, c.name, etc.'" },
+    { "when": "default", "text": "Carol: 'e for engagements. c for clients. Use them everywhere.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Carol nods. 'Better. You'll do this a lot. Get comfortable with it.'"
+  }
+}

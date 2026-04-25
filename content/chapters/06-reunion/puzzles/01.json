@@ -1,0 +1,31 @@
+{
+  "id": "01",
+  "concept": "select",
+  "brief": {
+    "speaker": "carol",
+    "text": "Start with our engagement ledger. I want to see the first ten rows. Just so we know what we're looking at."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "blank",   "id": "cols", "mode": "typed", "placeholder": "columns to show" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "blank",   "id": "tbl",  "mode": "typed", "placeholder": "table name" },
+    { "type": "keyword", "text": "LIMIT" },
+    { "type": "text",    "text": "10" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT engagement_id, client_id, era, year, anomaly_note FROM chrono_engagements LIMIT 10",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'Ten rows. I said ten.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'I asked for ten. Show me ten.'" },
+    { "when": "error",            "text": "Carol: 'The table is called chrono_engagements. Plural.'" },
+    { "when": "default",          "text": "Carol: 'Pick the columns you want. Name the table. Ten rows.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Carol nods. 'Right. Era, year, client_id. That id refers to a name on the client roster, but you have to ask the roster for it.'"
+  }
+}

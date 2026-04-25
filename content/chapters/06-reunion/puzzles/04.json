@@ -1,0 +1,35 @@
+{
+  "id": "04",
+  "concept": "inner-join",
+  "brief": {
+    "speaker": "carol",
+    "text": "Now show me only the engagements someone flagged. The anomaly_note column is NULL for normal cases. Filter those out. Keep the join, keep the aliases."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "e.era, e.year, c.name, e.anomaly_note" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "chrono_engagements e" },
+    { "type": "keyword", "text": "INNER JOIN" },
+    { "type": "text",    "text": "chrono_clients c" },
+    { "type": "keyword", "text": "ON" },
+    { "type": "text",    "text": "e.client_id = c.client_id" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "blank",   "id": "cond", "mode": "typed", "placeholder": "anomaly condition" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT e.era, e.year, c.name, e.anomaly_note FROM chrono_engagements e INNER JOIN chrono_clients c ON e.client_id = c.client_id WHERE e.anomaly_note IS NOT NULL",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'You're including normal engagements. The anomaly_note column tells you which is which.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Too few. We should have nine flagged engagements.'" },
+    { "when": "error",            "text": "Carol: 'IS NOT NULL — three keywords. The not-equal operator doesn''t work for NULL.'" },
+    { "when": "default",          "text": "Carol: 'Filter where the anomaly_note is not NULL.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Carol pulls a chair over. She runs her finger down the names column. 'Nine entries. Five — that's the same name. Five different rows, same name.' She lets it sit."
+  }
+}
