@@ -3,13 +3,11 @@
 A browser-based learning game that teaches SQL from zero, through fill-in-the-blank puzzles set inside a comedic time-travel consulting firm.
 
 ## Status
-Milestones A–C2 shipped: Chapters 1–4 playable end-to-end. Dropdown and word-bank mechanic modes. ~3000-row real-scale census data for Chapter 4. Production hardened (rate limiting, structured logging, CSP, dd-trace APM, custom Datadog metrics).
+Milestones A–D shipped: Chapters 1–5 playable end-to-end. Dropdown, word-bank, and typing mechanic modes. ~3000-row census data for Chapter 4; ~500-row tavern ledger for Chapter 5. Production hardened (rate limiting, structured logging, CSP, dd-trace APM, custom Datadog metrics).
 
 ## Production
 
-Live at `https://sequel.maxsaltonstall.com` on AWS Lightsail with Caddy (TLS) + systemd (process management) + Datadog Agent (observability).
-
-Full deploy runbook: [`docs/deploy.md`](docs/deploy.md).
+Live at https://sequel.maxsaltonstall.com on Google Cloud Run (containerized Node + DuckDB; Datadog telemetry via `datadog/serverless-init` sidecar). Deploys from this repo via `gcloud builds submit` + `gcloud run deploy`.
 
 ## Run locally
 
