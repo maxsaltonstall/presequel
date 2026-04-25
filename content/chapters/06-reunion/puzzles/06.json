@@ -1,0 +1,42 @@
+{
+  "id": "06",
+  "concept": "inner-join",
+  "brief": {
+    "speaker": "carol",
+    "text": "Filter to just Hemiunu — that name in the clients table. Order by year. Oldest first. I want the whole story end to end."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "e.era, e.year, r.detail, r.location, r.payment" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "chrono_engagements e" },
+    { "type": "keyword", "text": "INNER JOIN" },
+    { "type": "text",    "text": "chrono_clients c" },
+    { "type": "keyword", "text": "ON" },
+    { "type": "text",    "text": "e.client_id = c.client_id" },
+    { "type": "keyword", "text": "INNER JOIN" },
+    { "type": "text",    "text": "era_records r" },
+    { "type": "keyword", "text": "ON" },
+    { "type": "text",    "text": "r.engagement_id = e.engagement_id" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "blank",   "id": "filter", "mode": "typed", "placeholder": "name = Hemiunu" },
+    { "type": "keyword", "text": "ORDER BY" },
+    { "type": "blank",   "id": "order",  "mode": "typed", "placeholder": "chronological" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT e.era, e.year, r.detail, r.location, r.payment FROM chrono_engagements e INNER JOIN chrono_clients c ON e.client_id = c.client_id INNER JOIN era_records r ON r.engagement_id = e.engagement_id WHERE c.name = 'Hemiunu' ORDER BY e.year",
+    "order_sensitive": true
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'Too many. Filter to just Hemiunu — match c.name.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'You found nobody. Single quotes around the name.'" },
+    { "when": "different-values", "text": "Carol: 'Right rows, wrong order. Oldest first. e.year ascending.'" },
+    { "when": "error",            "text": "Carol: 'Single quotes around Hemiunu. Order by e.year — that's the column on the engagements table.'" },
+    { "when": "default",          "text": "Carol: 'WHERE c.name = the name. ORDER BY e.year. Five rows in chronological order.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Carol reads down the list. Two and a half thousand BCE. 1347. 1890. 1927. And then she stops. 'Twenty twenty-six. Chrono HQ.' She doesn't read the rest aloud. 'We're not chasing him through history. He's been in our basement the entire time.'"
+  }
+}

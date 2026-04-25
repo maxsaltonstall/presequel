@@ -1,0 +1,18 @@
+{
+  "id": "06-reunion",
+  "ordinal": 6,
+  "title": "The Reunion",
+  "era": "Chrono Consulting HQ, present day",
+  "client": {
+    "name": "Carol",
+    "portrait": "carol.svg",
+    "voice": "wry, tired, weirdly protective"
+  },
+  "boss_intro": "Carol is at the desk when you walk in. The desk is covered in ledgers. Five of them. Old Kingdom, Prague, New York, Chicago, and one binder you don't recognize. 'I had records pull everything. Every chapter we've worked, every engagement we've billed for. The firm's been around longer than the firm.' She gestures at a stack of carbon paper. 'The ledgers don't always agree. They occasionally don't even agree with themselves.' She doesn't sit down. 'I want to put them in the same shape. Then I want to see who's in all of them. Try not to flinch.' The mechanic is the same as Oldrich's. Type the queries. The firm doesn't do forms with neat little boxes for its own books — that, Carol once observed, is a privilege reserved for clients.",
+  "concepts_introduced": ["inner-join", "table-aliases"],
+  "concepts_reviewed": ["distinct", "having", "date-functions", "group-by", "where"],
+  "mechanic_mode": "typing",
+  "arc_hook": "Carol pulled every ledger from records. Same desk, five eras. The firm has been around longer than anyone alive — and the ledgers don't always agree.",
+  "puzzle_ids": ["01", "02", "03", "04", "05", "06"],
+  "outro": "Carol picks up the phone. The line rings once and clicks dead. She tries another. Same. 'Telecom's down too.' She looks at the clock. 'Internet — I had three dashboards open this morning. They're all blank.' She puts the phone back in its cradle, gentle. 'He cut the observability before he left. We can't see the building from inside the building.' A long beat. She walks over to the window — and pulls the blinds. 'Get yourself a coffee. The CEO's flying back. When she lands, she's going to want someone in this room who can read a query. That's you now.' Then, quieter, almost to herself: 'Welcome to Phase Two.'"
+}

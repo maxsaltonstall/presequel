@@ -1,0 +1,33 @@
+{
+  "id": "02",
+  "concept": "inner-join",
+  "brief": {
+    "speaker": "carol",
+    "text": "Join the engagements to the client roster on client_id. I want names, not numbers. Use INNER JOIN — table on the right is chrono_clients, matching column is client_id on both sides. INNER JOIN sounds intimate. It is not."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "chrono_engagements.era, chrono_engagements.year, chrono_clients.name" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "chrono_engagements" },
+    { "type": "keyword", "text": "INNER JOIN" },
+    { "type": "blank",   "id": "tbl", "mode": "typed", "placeholder": "table to join" },
+    { "type": "keyword", "text": "ON" },
+    { "type": "blank",   "id": "cond","mode": "typed", "placeholder": "join condition" },
+    { "type": "keyword", "text": "LIMIT" },
+    { "type": "text",    "text": "10" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT chrono_engagements.era, chrono_engagements.year, chrono_clients.name FROM chrono_engagements INNER JOIN chrono_clients ON chrono_engagements.client_id = chrono_clients.client_id LIMIT 10",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "error",   "text": "Carol: 'INNER JOIN takes a table name first, then ON, then the matching condition. Look at the reference if you've forgotten the shape.'" },
+    { "when": "default", "text": "Carol: 'chrono_clients on the right. Match client_id to client_id. Both sides need the table name.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Carol exhales. 'Good. Names next to numbers. Took ninety years and three database migrations to get here, more or less.'"
+  }
+}
