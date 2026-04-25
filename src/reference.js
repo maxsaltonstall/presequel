@@ -52,6 +52,21 @@ const CONCEPTS_FOR_CHAPTER = {
     { slug: 'having', title: 'HAVING' },
     { slug: 'date-functions', title: 'Date functions' },
   ],
+  '06-reunion': [
+    { slug: 'select', title: 'SELECT' },
+    { slug: 'from',   title: 'FROM' },
+    { slug: 'limit',  title: 'LIMIT' },
+    { slug: 'where',  title: 'WHERE' },
+    { slug: 'comparison-operators', title: 'Comparison ops' },
+    { slug: 'order-by', title: 'ORDER BY' },
+    { slug: 'count', title: 'COUNT' },
+    { slug: 'group-by', title: 'GROUP BY' },
+    { slug: 'distinct', title: 'DISTINCT' },
+    { slug: 'having', title: 'HAVING' },
+    { slug: 'date-functions', title: 'Date functions' },
+    { slug: 'inner-join', title: 'INNER JOIN' },
+    { slug: 'table-aliases', title: 'Table aliases' },
+  ],
 };
 
 let currentSlug = null;
