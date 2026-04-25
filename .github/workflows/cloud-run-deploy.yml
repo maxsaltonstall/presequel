@@ -31,11 +31,13 @@ jobs:
         with:
           project_id: ${{ env.GCP_PROJECT }}
 
-      - name: Build + push image to Artifact Registry
+      - name: Configure Docker auth for Artifact Registry
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
+
+      - name: Build + push image directly to Artifact Registry
         run: |
-          gcloud builds submit \
-            --tag "${{ env.IMAGE_REPO }}:${{ github.sha }}" \
-            --quiet
+          docker build -t "${{ env.IMAGE_REPO }}:${{ github.sha }}" .
+          docker push "${{ env.IMAGE_REPO }}:${{ github.sha }}"
 
       - name: Deploy to Cloud Run
         run: |
