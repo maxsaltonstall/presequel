@@ -201,6 +201,9 @@ async function main() {
     throw new Error(`Expected 6 phantom rows, got ${phantom.length}`);
   if (!phantom.some(r => r.level === 'error'))
     throw new Error('Phantom must have at least one error row');
+  const errorCount = rows.filter(r => r.level === 'error').length;
+  if (errorCount !== 48)
+    throw new Error(`Expected 48 error rows, got ${errorCount}`);
   const START_STR = fmtTs(START_TS_MS);
   const END_STR   = fmtTs(START_TS_MS + HOUR_MS);
   const outOfHour = rows.filter(r => r.ts < START_STR || r.ts > END_STR);
