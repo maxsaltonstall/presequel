@@ -142,11 +142,11 @@ const PHANTOM_ROWS = [
   { offsetSec: 3420, message: 'unexpected mirror state: retry', level: 'error', status: '500', host: 'prn-host-006', region: 'us-central1' },
 ];
 
-function makeMessage(service, globalIdx, level) {
+function makeMessage(service, seed, level) {
   const paths = SERVICE_PATHS[service];
-  const path   = paths[(globalIdx * 13) % paths.length];
-  const method = METHODS[(globalIdx * 3) % METHODS.length];
-  const ms     = 5 + (globalIdx * 7) % 200;
+  const path   = paths[(seed * 13) % paths.length];
+  const method = METHODS[(seed * 3) % METHODS.length];
+  const ms     = 5 + (seed * 7) % 200;
   const code   = level === 'error' ? '500' : level === 'warn' ? '429' : '200';
   return level === 'error'
     ? `${method} ${path} ${code} timeout after ${ms}ms`
@@ -206,7 +206,7 @@ async function main() {
     throw new Error(`Expected 48 error rows, got ${errorCount}`);
   const START_STR = fmtTs(START_TS_MS);
   const END_STR   = fmtTs(START_TS_MS + HOUR_MS);
-  const outOfHour = rows.filter(r => r.ts < START_STR || r.ts > END_STR);
+  const outOfHour = rows.filter(r => r.ts < START_STR || r.ts >= END_STR);
   if (outOfHour.length > 0)
     throw new Error(`${outOfHour.length} rows fall outside the 1-hour window`);
 
