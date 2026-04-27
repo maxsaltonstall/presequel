@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { translateTimeWindow, translateBucket } from '../server/ddsql.js';
+import { translateTagFilter, translateTimeWindow, translateBucket } from '../server/ddsql.js';
 
 // translateTimeWindow — basic cases
 test('now-1h to now → 1-hour interval', () => {
@@ -81,4 +81,13 @@ test('composition: @timestamp and bucket both rewritten correctly', () => {
   const input = "SELECT bucket(timestamp, 1m) AS minute, COUNT(*) AS n FROM logs WHERE @timestamp:[now-1h to now] GROUP BY minute ORDER BY minute";
   const expected = "SELECT DATE_TRUNC('minute', timestamp) AS minute, COUNT(*) AS n FROM logs WHERE timestamp >= getvariable('ch8_anchor') - INTERVAL '1 hours' AND timestamp <= getvariable('ch8_anchor') GROUP BY minute ORDER BY minute";
   assert.equal(translateBucket(translateTimeWindow(input)), expected);
+});
+
+test('three-way composition: @timestamp survives translateTagFilter when translateTimeWindow runs first', () => {
+  const sql = "SELECT * FROM logs WHERE @timestamp:[now-5m to now] AND level:error";
+  const result = translateBucket(translateTagFilter(translateTimeWindow(sql)));
+  assert.equal(
+    result,
+    "SELECT * FROM logs WHERE timestamp >= getvariable('ch8_anchor') - INTERVAL '5 minutes' AND timestamp <= getvariable('ch8_anchor') AND tags['level'] = 'error'"
+  );
 });
