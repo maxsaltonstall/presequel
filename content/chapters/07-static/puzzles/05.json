@@ -1,0 +1,31 @@
+{
+  "id": "05",
+  "concept": "ddsql-tags",
+  "brief": {
+    "speaker": "carol",
+    "text": "Forget auth for a second. Show me everything that errored in the last hour. level:error, anywhere it lives. Take a moment to read the service column."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "*" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "logs" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "blank",   "id": "filter", "mode": "typed", "placeholder": "tag filter" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT * FROM logs WHERE tags['level'] = 'error'",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'That's more than just errors. level:error — only the error-level logs.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'There are more errors than that. level:error across all services.'" },
+    { "when": "error",            "text": "Carol: 'Query error. level:error — key colon value, just like before, just a different key.'" },
+    { "when": "default",          "text": "Carol: 'level:error. Single tag condition. All services.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Forty-eight errors. Forty-seven of them I can place. This one — chrono-portal-mirror. We don't have a service called that. Pull just its logs. All of them."
+  }
+}

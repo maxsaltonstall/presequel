@@ -1,0 +1,31 @@
+{
+  "id": "02",
+  "concept": "ddsql-tags",
+  "brief": {
+    "speaker": "carol",
+    "text": "Pull every log from auth-svc. In DDSQL — service:auth-svc. That's the new shape."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "*" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "logs" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "blank",   "id": "filter", "mode": "typed", "placeholder": "tag filter" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT * FROM logs WHERE tags['service'] = 'auth-svc'",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'That's too many. You want just auth-svc. service:auth-svc.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Not enough rows. auth-svc logs for the last hour should be around 150.'" },
+    { "when": "error",            "text": "Carol: 'Query error. Try: service:auth-svc — key colon value, no quotes, no equals sign.'" },
+    { "when": "default",          "text": "Carol: 'service:auth-svc — the key is service, colon, then the value. That filters to just that service.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "About a hundred fifty. That's normal volume for an hour. Auth is the bottom of the stack — nothing builds on top of nothing."
+  }
+}

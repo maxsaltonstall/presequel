@@ -1,0 +1,31 @@
+{
+  "id": "04",
+  "concept": "ddsql-tags",
+  "brief": {
+    "speaker": "carol",
+    "text": "Same query. Drop info-level. Negation in DDSQL is a leading hyphen on the tag — -level:info. Same way you'd remove a term from a search."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "*" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "logs" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "blank",   "id": "filter", "mode": "typed", "placeholder": "tag filter" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT * FROM logs WHERE tags['service'] = 'auth-svc' AND tags['env'] = 'prod' AND tags['level'] != 'info'",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'Still noise in there. The hyphen before the tag excludes it — -level:info.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Too few. service:auth-svc env:prod -level:info — three conditions.'" },
+    { "when": "error",            "text": "Carol: 'Query error. Three tags: service:auth-svc env:prod -level:info. Leading hyphen is the negation.'" },
+    { "when": "default",          "text": "Carol: 'service:auth-svc env:prod -level:info — the hyphen means NOT. Three tags, third one excluded.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Thirty rows. Now we can actually read them."
+  }
+}
