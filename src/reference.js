@@ -67,6 +67,14 @@ const CONCEPTS_FOR_CHAPTER = {
     { slug: 'inner-join', title: 'INNER JOIN' },
     { slug: 'table-aliases', title: 'Table aliases' },
   ],
+  '07-static': [
+    { slug: 'select',               title: 'SELECT' },
+    { slug: 'from',                 title: 'FROM' },
+    { slug: 'limit',                title: 'LIMIT' },
+    { slug: 'where',                title: 'WHERE' },
+    { slug: 'comparison-operators', title: 'Comparison ops' },
+    { slug: 'ddsql-tags',           title: 'DDSQL tags' },
+  ],
 };
 
 let currentSlug = null;
