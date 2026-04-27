@@ -1,0 +1,31 @@
+{
+  "id": "06",
+  "concept": "ddsql-tags",
+  "brief": {
+    "speaker": "carol",
+    "text": "service:chrono-portal-mirror. Whatever it is, it's logging. Show me everything."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "*" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "logs" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "blank",   "id": "filter", "mode": "typed", "placeholder": "tag filter" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT * FROM logs WHERE tags['service'] = 'chrono-portal-mirror'",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'Too many. You want only chrono-portal-mirror — service:chrono-portal-mirror.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'There should be six rows. service:chrono-portal-mirror, exact name.'" },
+    { "when": "error",            "text": "Carol: 'Query error. service:chrono-portal-mirror — hyphens are fine in values.'" },
+    { "when": "default",          "text": "Carol: 'service:chrono-portal-mirror. Full value. Six rows.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Portal handshake initiated. Transit window aligned. Key exchange ok. Nothing about a customer, or a request, or a user. We don't deploy services with names like that. Whoever does, doesn't work for us. Or shouldn't."
+  }
+}

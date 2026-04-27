@@ -1,0 +1,31 @@
+{
+  "id": "03",
+  "concept": "ddsql-tags",
+  "brief": {
+    "speaker": "carol",
+    "text": "Now narrow it to prod. Two tags, separated by a space. Implicit AND. DDSQL won't make you type the word."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "*" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "logs" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "blank",   "id": "filter", "mode": "typed", "placeholder": "tag filter" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT * FROM logs WHERE tags['service'] = 'auth-svc' AND tags['env'] = 'prod'",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'Still too many. You need both service:auth-svc and env:prod.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Too few. You want auth-svc in prod — space between the two tag conditions.'" },
+    { "when": "error",            "text": "Carol: 'Query error. Two tags separated by a space — service:auth-svc env:prod. No AND needed.'" },
+    { "when": "default",          "text": "Carol: 'service:auth-svc env:prod — two conditions, space between them. That is the AND.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Down to a hundred and ten. Staging and dev account for the rest. Carry on."
+  }
+}

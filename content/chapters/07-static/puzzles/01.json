@@ -1,0 +1,31 @@
+{
+  "id": "01",
+  "concept": "logs-schema",
+  "brief": {
+    "speaker": "carol",
+    "text": "Show me ten lines. I want us both staring at the same thing before I ask anything else."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "blank",   "id": "cols", "mode": "typed", "placeholder": "columns to show" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "blank",   "id": "tbl",  "mode": "typed", "placeholder": "table name" },
+    { "type": "keyword", "text": "LIMIT" },
+    { "type": "text",    "text": "10" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT timestamp, message, tags FROM logs LIMIT 10",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'I asked for ten lines. That's more than ten.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Not enough. Ten lines. The LIMIT is right there.'" },
+    { "when": "error",            "text": "Carol: 'Something's wrong with the query. The table is called logs, three columns: timestamp, message, tags.'" },
+    { "when": "default",          "text": "Carol: 'Three columns — timestamp, message, tags. Table is logs. Limit to ten.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Right. Time, message, tags. Tags is where we live this season. Get used to it."
+  }
+}

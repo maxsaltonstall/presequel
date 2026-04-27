@@ -39,6 +39,7 @@ async function openChapter(chapterId) {
 
 function normalizeValue(v) {
   if (typeof v === 'bigint') return Number(v);
+  if (v instanceof Date) return v.toISOString().replace('T', ' ').slice(0, 23);
   if (Array.isArray(v)) return v.map(normalizeValue);
   if (v !== null && typeof v === 'object') {
     const out = {};

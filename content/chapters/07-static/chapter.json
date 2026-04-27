@@ -1,0 +1,18 @@
+{
+  "id": "07-static",
+  "ordinal": 7,
+  "title": "Static",
+  "era": "Chrono Consulting HQ, present day",
+  "client": {
+    "name": "Carol",
+    "portrait": "carol.svg",
+    "voice": "dry, tired, weirdly protective"
+  },
+  "boss_intro": "Carol drops a printout on your desk. Most of the page is redacted black. You can read the subject line — RE: forensic plan, post-Hemiunu — and one line of body: — if she's still in the country, get her on a video call by Wednesday. Otherwise pull her access. — M.\n\nShe's the CEO. The 'M' is initial, not name. Don't ask. She's three hours out and sending notes that arrive an hour before she does, which is a problem with our infrastructure as much as with her.\n\nCarol sits down. Logs are coming back online. About sixty percent. Whoever cut the observability didn't quite finish the job. Some of the gaps are interesting.\n\nShe gestures at the screen. We have a query language for log search — DDSQL. SQL-shaped, but tags use a colon. service:auth-svc is the same as service equals auth-svc. We're going to use it because that's what the data speaks. Same typing as last chapter. The forms haven't gotten fancier.",
+  "concepts_introduced": ["ddsql-tags"],
+  "concepts_reviewed": ["select", "from", "where", "limit"],
+  "mechanic_mode": "typing",
+  "arc_hook": "Logs are coming back online — sixty percent. Someone cut the observability before they left. Some of the gaps are interesting.",
+  "puzzle_ids": ["01", "02", "03", "04", "05", "06"],
+  "outro": "Carol prints the six log lines and pins them to the corkboard above her desk. The corkboard already has Phase 1 artifacts on it — the patron register page from Oldrich's tavern, the four ledger lines from the Reunion. She moves those over to make room.\n\nHer phone buzzes. Voicemail. She lets it play on speaker.\n\nA woman's voice — older, clipped, mid-Atlantic the way 1950s movie stars used to sound. Carol. I see what you sent. I'll be on the ground at six. Don't touch the timestamps. We're going to want to know exactly when each of those fired. Not the order — the seconds. Find me the seconds.\n\nClick. No goodbye. No name.\n\nCarol turns off her speaker. Right. The seconds. That's tomorrow."
+}

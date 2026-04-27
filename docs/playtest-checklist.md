@@ -247,3 +247,44 @@ Run through this list manually before declaring Milestone A shippable. Expected 
 - [ ] Carol's voice feels consistent across bubbles.
 - [ ] Hints feel in-character, not like error dumps.
 - [ ] No bubbles feel preachy or condescending.
+
+## Chapter 7 — Static
+
+### Boot and navigation
+- [ ] Carol's boss-intro bubble mentions the redacted email and "M."
+- [ ] Progress indicator shows "Static · Puzzle 1 of 6".
+- [ ] Reference drawer shows DDSQL tags tab alongside SELECT, FROM, WHERE, LIMIT, Comparison ops.
+- [ ] DDSQL tags reference renders correctly (forms, notes).
+
+### Puzzle 01 — Schema intro (no DDSQL yet)
+- [ ] Two typed inputs visible (columns, table name).
+- [ ] Correct answer: `timestamp, message, tags` / `logs` → 10 rows, success bubble.
+- [ ] Wrong column name (e.g. `ts`) → error hint.
+- [ ] Wrong table name (e.g. `log`) → error hint.
+
+### Puzzle 02 — Single tag filter
+- [ ] Brief mentions `service:auth-svc`.
+- [ ] Typing `service:auth-svc` → ~150 rows, success bubble.
+- [ ] Typing `service:api-gateway` → different row count, no success.
+- [ ] Typing `auth-svc` (no key:) → error hint (invalid SQL).
+
+### Puzzle 03 — Implicit AND
+- [ ] Brief mentions space-separated implicit AND.
+- [ ] Typing `service:auth-svc env:prod` → ~110 rows, success.
+- [ ] Typing just `service:auth-svc` → ~150 rows, wrong count hint.
+
+### Puzzle 04 — Negation
+- [ ] Brief mentions `-level:info` with the leading hyphen.
+- [ ] Typing `service:auth-svc env:prod -level:info` → 30 rows, success.
+- [ ] Typing `service:auth-svc env:prod level:info` (no hyphen) → wrong count.
+
+### Puzzle 05 — All errors (phantom surface)
+- [ ] Typing `level:error` → 48 rows, success.
+- [ ] Success copy mentions `chrono-portal-mirror` and "Forty-eight errors."
+- [ ] Brief for puzzle 06 appears immediately after success.
+
+### Puzzle 06 — Phantom finale
+- [ ] Typing `service:chrono-portal-mirror` → 6 rows, success.
+- [ ] Success copy reads six cryptic messages.
+- [ ] Chapter outro plays: voicemail from "M.", "Find me the seconds."
+- [ ] Outro does NOT auto-advance to Chapter 8 (chapter 8 not yet shipped).
