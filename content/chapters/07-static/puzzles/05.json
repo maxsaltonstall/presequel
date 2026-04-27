@@ -3,7 +3,7 @@
   "concept": "ddsql-tags",
   "brief": {
     "speaker": "carol",
-    "text": "Forget auth for a second. Show me everything that errored in the last hour. level:error, anywhere it lives. Take a moment to read the service column."
+    "text": "Forget auth for a second. Show me everything that errored in the last hour. level:error, anywhere it lives. Take a moment to read the service tag in the results."
   },
   "template": [
     { "type": "keyword", "text": "SELECT" },
