@@ -1,5 +1,5 @@
 function translateRun(run) {
-  const tokenRe = /(-?)(\w+):('(?:[^']*)'|\S+)/g;
+  const tokenRe = /(-?)(\w+):('(?:[^']*)'|[^\s)]+)/g;
   const parts = [];
   let m;
   while ((m = tokenRe.exec(run)) !== null) {
@@ -15,7 +15,7 @@ export function translateTagFilter(sql) {
   return sql.replace(
     /(\bWHERE\b)([\s\S]*?)(?=\b(?:GROUP\s+BY|ORDER\s+BY|LIMIT|HAVING|UNION|EXCEPT|INTERSECT)\b|$)/gi,
     (_, kw, body) => {
-      const runRe = /((?:-?\w+:(?:'[^']*'|\S+))(?:\s+(?:-?\w+:(?:'[^']*'|\S+)))*)/g;
+      const runRe = /((?:-?\w+:(?:'[^']*'|[^\s)]+))(?:\s+(?:-?\w+:(?:'[^']*'|[^\s)]+)))*)/g;
       return kw + body.replace(runRe, translateRun);
     }
   );
