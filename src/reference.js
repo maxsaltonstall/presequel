@@ -75,6 +75,16 @@ const CONCEPTS_FOR_CHAPTER = {
     { slug: 'comparison-operators', title: 'Comparison ops' },
     { slug: 'ddsql-tags',           title: 'DDSQL tags' },
   ],
+  '08-when': [
+    { slug: 'select',               title: 'SELECT' },
+    { slug: 'from',                 title: 'FROM' },
+    { slug: 'where',                title: 'WHERE' },
+    { slug: 'group-by',             title: 'GROUP BY' },
+    { slug: 'order-by',             title: 'ORDER BY' },
+    { slug: 'count',                title: 'COUNT' },
+    { slug: 'ddsql-tags',           title: 'DDSQL tags' },
+    { slug: 'time-windows',         title: 'Time windows' },
+  ],
 };
 
 let currentSlug = null;
