@@ -1,5 +1,5 @@
 ---
-slug: time-windows
+concept: time-windows
 title: Time Windows
 introduced_in: 08-when
 ---
