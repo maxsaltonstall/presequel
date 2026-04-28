@@ -27,7 +27,7 @@ export function checkAndConsume(bucket, nowMs) {
 }
 
 const buckets = new Map();
-const CAPACITY = 30;
+const CAPACITY = Number(process.env.RATE_LIMIT_CAPACITY) || 30;
 const REFILL_MS = 60_000;
 
 export function allowRequest(ip) {
