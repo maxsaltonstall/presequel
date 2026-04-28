@@ -287,4 +287,52 @@ Run through this list manually before declaring Milestone A shippable. Expected 
 - [ ] Typing `service:chrono-portal-mirror` → 6 rows, success.
 - [ ] Success copy reads six cryptic messages.
 - [ ] Chapter outro plays: voicemail from "M.", "Find me the seconds."
-- [ ] Outro does NOT auto-advance to Chapter 8 (chapter 8 not yet shipped).
+- [ ] Outro auto-advances to Chapter 8.
+
+## Chapter 8 — When (time windows + bucket)
+
+### Boot and navigation
+- [ ] Solving Chapter 7 Puzzle 06 auto-advances to Chapter 8; OR set localStorage state to land directly.
+- [ ] Carol's boss-intro bubble references "I know that time" and "chrono-portal-mirror has a schedule."
+- [ ] Progress indicator shows "When · Puzzle 1 of 6".
+- [ ] Reference drawer shows Time windows tab alongside SELECT, FROM, WHERE, GROUP BY, ORDER BY, COUNT, DDSQL tags.
+- [ ] Time windows reference renders correctly (forms, offset table, bucket table).
+
+### Puzzle 01 — Time range
+- [ ] One typed input visible (table name).
+- [ ] Correct answer: `logs` → 1 row showing 08:00:00 start and 11:00:00 end. Success bubble.
+- [ ] Wrong table name (e.g. `log`) → error hint.
+
+### Puzzle 02 — Last hour filter
+- [ ] Brief mentions `@timestamp:[now-1h to now]` explicitly.
+- [ ] Typing `@timestamp:[now-1h to now]` → ~1000 rows limited to 20 shown. Success bubble.
+- [ ] Typing `level:error` → error hint (no @timestamp in WHERE).
+
+### Puzzle 03 — Bucket by minute
+- [ ] Brief mentions `bucket(timestamp, 1m)`.
+- [ ] Typing `bucket(timestamp, 1m)` → ~60 rows (one per minute), order_sensitive. Success bubble.
+- [ ] Typing `bucket(timestamp, 1h)` → 1 row (wrong count) → wrong-count-low hint.
+- [ ] Carol's success text: "Fifty-seven minutes in. Something happened there."
+
+### Puzzle 04 — Spike window
+- [ ] Brief says "last five minutes."
+- [ ] Typing `@timestamp:[now-5m to now]` → ~212 rows. Success bubble.
+- [ ] Carol's success text mentions "chrono-portal-mirror" and "four logs."
+
+### Puzzle 05 — Errors by second
+- [ ] Brief mentions "bucket by second" and "errors only."
+- [ ] Typing `bucket(timestamp, 1s)` → 4 rows (one per spike second). Success bubble.
+- [ ] Typing `bucket(timestamp, 1m)` → fewer than 4 rows or wrong shape → wrong-count hint.
+- [ ] Carol's success text: "Four seconds."
+
+### Puzzle 06 — Phantom timestamps
+- [ ] Brief says "all four."
+- [ ] Typing `service:chrono-portal-mirror` → 4 rows ordered by timestamp. Success bubble.
+- [ ] Carol's success text: "Those seconds. She already knew which ones."
+- [ ] Chapter outro plays: Carol's Post-it note, "I want to know how fast it moves."
+- [ ] Outro does NOT auto-advance (Chapter 9 not yet shipped).
+
+### Reference drawer — Chapter 8
+- [ ] Drawer shows 8 concepts: SELECT, FROM, WHERE, GROUP BY, ORDER BY, COUNT, DDSQL tags, Time windows.
+- [ ] Time windows renders with @timestamp and bucket() sections.
+- [ ] Switching between concepts works; aria-current updates.
