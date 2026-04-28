@@ -1,0 +1,29 @@
+{
+  "id": "01",
+  "concept": "logs-schema",
+  "brief": {
+    "speaker": "carol",
+    "text": "First things first. Show me the time range we're working with. MIN and MAX of timestamp."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "MIN(timestamp) AS start, MAX(timestamp) AS end" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "blank",   "id": "tbl", "mode": "typed", "placeholder": "table name" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT MIN(timestamp) AS start, MAX(timestamp) AS end FROM logs",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'That returned more than one row. MIN and MAX together produce one summary row.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Empty result. The table is logs.'" },
+    { "when": "error",            "text": "Carol: 'Query error. The table is logs. Nothing else.'" },
+    { "when": "default",          "text": "Carol: 'FROM logs. The table is called logs. One row back.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Eight to eleven. Three hours. Whoever was moving, they were moving in that window."
+  }
+}

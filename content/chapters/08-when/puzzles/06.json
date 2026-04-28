@@ -1,0 +1,33 @@
+{
+  "id": "06",
+  "concept": "ddsql-tags",
+  "brief": {
+    "speaker": "carol",
+    "text": "Pull the phantom's logs. All four. I want to see the exact timestamps."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "timestamp, message" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "logs" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "blank",   "id": "filter", "mode": "typed", "placeholder": "service filter" },
+    { "type": "keyword", "text": "ORDER BY" },
+    { "type": "text",    "text": "timestamp" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT timestamp, message FROM logs WHERE tags['service'] = 'chrono-portal-mirror' ORDER BY timestamp",
+    "order_sensitive": true
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'Too many rows. service:chrono-portal-mirror — just that service.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Not enough. There are exactly four phantom rows. service:chrono-portal-mirror.'" },
+    { "when": "error",            "text": "Carol: 'Query error. service:chrono-portal-mirror — colon, no quotes, no equals.'" },
+    { "when": "default",          "text": "Carol: 'service:chrono-portal-mirror. Filter on the service tag.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Those seconds. She already knew which ones."
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "02",
+  "concept": "time-windows",
+  "brief": {
+    "speaker": "carol",
+    "text": "Start with the last hour. @timestamp:[now-1h to now] — brackets, to between the bounds. Limit to twenty so we can read it."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "*" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "logs" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "blank",   "id": "window", "mode": "typed", "placeholder": "time window filter" },
+    { "type": "keyword", "text": "LIMIT" },
+    { "type": "text",    "text": "20" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT * FROM logs WHERE timestamp >= getvariable('ch8_anchor') - INTERVAL '1 hours' AND timestamp <= getvariable('ch8_anchor') LIMIT 20",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'Too many. The LIMIT is 20. Only the last hour — @timestamp:[now-1h to now].'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Not enough. @timestamp:[now-1h to now] — open bracket, now-1h, to, now, close bracket.'" },
+    { "when": "error",            "text": "Carol: 'Query error. @timestamp:[now-1h to now] — that exact form. Brackets and all.'" },
+    { "when": "default",          "text": "Carol: '@timestamp:[now-1h to now] in the WHERE blank. Limit is already filled in.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "About a thousand rows. Normal background. Keep narrowing."
+  }
+}

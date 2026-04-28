@@ -1,0 +1,36 @@
+{
+  "id": "03",
+  "concept": "time-windows",
+  "brief": {
+    "speaker": "carol",
+    "text": "Bucket the last hour by minute. bucket(timestamp, 1m) — that's DATE_TRUNC in plain SQL, but shorter. Count per bucket, order by time."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "blank",   "id": "bucket", "mode": "typed", "placeholder": "bucket expression" },
+    { "type": "text",    "text": "AS minute, COUNT(*) AS n" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "logs" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "text",    "text": "@timestamp:[now-1h to now]" },
+    { "type": "keyword", "text": "GROUP BY" },
+    { "type": "text",    "text": "minute" },
+    { "type": "keyword", "text": "ORDER BY" },
+    { "type": "text",    "text": "minute" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT DATE_TRUNC('minute', timestamp) AS minute, COUNT(*) AS n FROM logs WHERE timestamp >= getvariable('ch8_anchor') - INTERVAL '1 hours' AND timestamp <= getvariable('ch8_anchor') GROUP BY minute ORDER BY minute",
+    "order_sensitive": true
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'Too many rows. bucket(timestamp, 1m) groups by minute — should be one row per minute.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Not enough buckets. The last hour has sixty minutes. bucket(timestamp, 1m).'" },
+    { "when": "error",            "text": "Carol: 'Query error. bucket(timestamp, 1m) — that exact form. Field, comma, interval.'" },
+    { "when": "default",          "text": "Carol: 'bucket(timestamp, 1m) goes in the SELECT blank. Groups by minute, just like DATE_TRUNC.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Fifty-seven minutes in. Something happened there."
+  }
+}
