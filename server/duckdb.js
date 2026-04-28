@@ -42,6 +42,7 @@ function normalizeValue(v) {
   if (v instanceof Date) return v.toISOString().replace('T', ' ').slice(0, 23);
   if (Array.isArray(v)) return v.map(normalizeValue);
   if (v !== null && typeof v === 'object') {
+    if (v.toString !== Object.prototype.toString) return v.toString();
     const out = {};
     for (const [k, val] of Object.entries(v)) out[k] = normalizeValue(val);
     return out;
