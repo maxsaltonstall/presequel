@@ -3,7 +3,7 @@ import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { runQuery } from './server/duckdb.js';
 import { validateSql } from './server/security.js';
-import { translateTagFilter, translateTimeWindow, translateBucket } from './server/ddsql.js';
+import { translateTagFilter, translateTimeWindow, translateBucket, translateRate } from './server/ddsql.js';
 import { allowRequest } from './server/ratelimit.js';
 import { log } from './server/logger.js';
 import { metrics } from './server/metrics.js';
@@ -120,7 +120,7 @@ async function handleRun(req, res) {
   if (!/^[a-z0-9-]+$/.test(chapter)) {
     return sendJson(res, 400, { error: 'invalid chapter id' });
   }
-  const translated = translateBucket(translateTagFilter(translateTimeWindow(sql)));
+  const translated = translateBucket(translateTagFilter(translateTimeWindow(translateRate(sql))));
   const validation = validateSql(translated);
   if (!validation.ok) {
     log.warn('query.rejected', { ip, chapter, reason: validation.error, sql_preview: sql.slice(0, 120) });

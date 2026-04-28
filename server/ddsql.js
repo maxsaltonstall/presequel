@@ -51,3 +51,9 @@ export function translateBucket(sql) {
     return `DATE_TRUNC('${unit}', ${field})`;
   });
 }
+
+export function translateRate(sql) {
+  return sql.replace(/\brate\s*\(\s*(\w+)\s*,\s*1m\s*\)/gi, (_, field) =>
+    `ROUND(${field} / 60.0, 2)`
+  );
+}
