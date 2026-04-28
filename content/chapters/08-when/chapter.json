@@ -1,0 +1,18 @@
+{
+  "id": "08-when",
+  "ordinal": 8,
+  "title": "When",
+  "era": "Chrono Consulting HQ, the next morning",
+  "client": {
+    "name": "Carol",
+    "portrait": "carol.svg",
+    "voice": "dry, tired, weirdly protective"
+  },
+  "boss_intro": "M.'s reply is taped above the corkboard — printout from this morning, three words in Carol's handwriting: I know that time.\n\nCarol doesn't explain what she sent. She pulls up a terminal.\n\nShe told us to find the seconds. We found them. She already knew. Which means whoever built chrono-portal-mirror has a schedule — and M. has seen it before.\n\nShe opens the log dataset. We have three hours of data. Eight to eleven. DDSQL time filter is @timestamp — open bracket, start, to, end, close bracket. now means the end of this dataset. We work backwards from there.",
+  "concepts_introduced": ["time-windows"],
+  "concepts_reviewed": ["select", "from", "where", "group-by", "order-by", "count", "ddsql-tags"],
+  "mechanic_mode": "typing",
+  "arc_hook": "M. already knew the spike seconds before we pulled them. chrono-portal-mirror was on a schedule — and someone knew what that schedule was.",
+  "puzzle_ids": ["01", "02", "03", "04", "05", "06"],
+  "outro": "Carol writes the four spike-seconds on a Post-it and sticks it to the corkboard next to the phantom service rows. She photographs it — already sent it, apparently. Her phone is face-down on the desk.\n\nOkay. So she knew before we looked. Which means whoever this is — whatever chrono-portal-mirror is — it's not new. It's been running long enough that M. has a history with it.\n\nShe pulls up the traffic graphs. I want to know how fast it moves. Not just when — how much, and how fast."
+}

@@ -1,0 +1,36 @@
+{
+  "id": "05",
+  "concept": "time-windows",
+  "brief": {
+    "speaker": "carol",
+    "text": "Bucket by second. Errors only. Last five minutes. I want to see which seconds had the most noise."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "blank",   "id": "bucket", "mode": "typed", "placeholder": "bucket expression" },
+    { "type": "text",    "text": "AS second, COUNT(*) AS n" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "logs" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "text",    "text": "@timestamp:[now-5m to now] AND level:error" },
+    { "type": "keyword", "text": "GROUP BY" },
+    { "type": "text",    "text": "second" },
+    { "type": "keyword", "text": "ORDER BY" },
+    { "type": "text",    "text": "second" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT DATE_TRUNC('second', timestamp) AS second, COUNT(*) AS n FROM logs WHERE timestamp >= getvariable('ch8_anchor') - INTERVAL '5 minutes' AND timestamp <= getvariable('ch8_anchor') AND tags['level'] = 'error' GROUP BY second ORDER BY second",
+    "order_sensitive": true
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'Too many seconds with errors. The interval is 1s — bucket(timestamp, 1s).'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Not enough. There are four spike seconds with errors. bucket(timestamp, 1s).'" },
+    { "when": "error",            "text": "Carol: 'Query error. bucket(timestamp, 1s) — s is seconds, not seconds-plural.'" },
+    { "when": "default",          "text": "Carol: 'bucket(timestamp, 1s) in the SELECT blank. 1s for seconds.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Four seconds. Four seconds in a five-minute window where errors spike. That's not random."
+  }
+}

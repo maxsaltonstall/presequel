@@ -20,3 +20,34 @@ export function translateTagFilter(sql) {
     }
   );
 }
+
+function translateBound(b) {
+  const lower = b.toLowerCase();
+  if (lower === 'now') return "getvariable('ch8_anchor')";
+  const m = lower.match(/^now-(\d+)(h|m|s)$/);
+  if (!m) return null;
+  const [, n, unit] = m;
+  const units = { h: 'hours', m: 'minutes', s: 'seconds' };
+  return `getvariable('ch8_anchor') - INTERVAL '${n} ${units[unit]}'`;
+}
+
+export function translateTimeWindow(sql) {
+  return sql.replace(/@timestamp:\[([^\]]+)\]/gi, (match, inner) => {
+    const parts = inner.split(/\s+to\s+/i);
+    if (parts.length !== 2) return match;
+    const lo = translateBound(parts[0].trim());
+    const hi = translateBound(parts[1].trim());
+    if (!lo || !hi) return match;
+    return `timestamp >= ${lo} AND timestamp <= ${hi}`;
+  });
+}
+
+const BUCKET_UNITS = { '1s': 'second', '1m': 'minute', '1h': 'hour' };
+
+export function translateBucket(sql) {
+  return sql.replace(/\bbucket\s*\(\s*(\w+)\s*,\s*(\w+)\s*\)/gi, (match, field, interval) => {
+    const unit = BUCKET_UNITS[interval.toLowerCase()];
+    if (!unit) return match;
+    return `DATE_TRUNC('${unit}', ${field})`;
+  });
+}

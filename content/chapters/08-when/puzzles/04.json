@@ -1,0 +1,31 @@
+{
+  "id": "04",
+  "concept": "time-windows",
+  "brief": {
+    "speaker": "carol",
+    "text": "Last five minutes. That's the spike. Show me everything."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "*" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "logs" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "blank",   "id": "window", "mode": "typed", "placeholder": "time window filter" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT * FROM logs WHERE timestamp >= getvariable('ch8_anchor') - INTERVAL '5 minutes' AND timestamp <= getvariable('ch8_anchor')",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'Too many. Five minutes only — @timestamp:[now-5m to now].'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Not enough rows. The five-minute spike window should be around two hundred rows.'" },
+    { "when": "error",            "text": "Carol: 'Query error. @timestamp:[now-5m to now] — m is minutes, not hours.'" },
+    { "when": "default",          "text": "Carol: '@timestamp:[now-5m to now]. The spike is the last five minutes.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Two hundred rows. chrono-portal-mirror is in here. Four logs."
+  }
+}
