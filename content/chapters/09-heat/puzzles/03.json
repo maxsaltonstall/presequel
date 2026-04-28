@@ -1,0 +1,34 @@
+{
+  "id": "03",
+  "concept": "rate",
+  "brief": {
+    "speaker": "carol",
+    "text": "Which service peaks highest? One number per service — the maximum rate any single minute hit."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "service, MAX(rate(n, 1m)) AS peak_rps" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "metrics" },
+    { "type": "keyword", "text": "GROUP BY" },
+    { "type": "blank",   "id": "group_col", "mode": "typed", "placeholder": "column" },
+    { "type": "keyword", "text": "ORDER BY" },
+    { "type": "text",    "text": "peak_rps DESC" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT service, MAX(ROUND(n / 60.0, 2)) AS peak_rps FROM metrics GROUP BY service ORDER BY peak_rps DESC",
+    "order_sensitive": true
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'Too many rows. GROUP BY service — one row per service.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Not enough rows. GROUP BY service.'" },
+    { "when": "error",            "text": "Carol: 'Query error. GROUP BY service — that column is called service.'" },
+    { "when": "different_values", "text": "Carol: 'Wrong values. Group by service.'" },
+    { "when": "default",          "text": "Carol: 'GROUP BY service. One row per service, highest rate for that service.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "There it is. chrono-portal-mirror at the top by a wide margin. Everything else is noise."
+  }
+}

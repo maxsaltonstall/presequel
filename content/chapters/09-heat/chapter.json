@@ -1,0 +1,18 @@
+{
+  "id": "09-heat",
+  "ordinal": 9,
+  "title": "Heat",
+  "era": "Chrono Consulting HQ, present day",
+  "client": {
+    "name": "Carol",
+    "portrait": "carol.svg",
+    "voice": "dry, tired, weirdly protective"
+  },
+  "boss_intro": "M.'s plane landed at six. She hasn't called. Carol is looking at the metrics table — different shape than logs. Pre-aggregated. Every minute, every service: n is total events, errors is error events. No raw messages. No tags column. Just counts.\n\nRate is what you get when you divide a count by time. Rate is what M. asked for.",
+  "concepts_introduced": ["rate"],
+  "concepts_reviewed": ["select", "from", "where", "group-by", "order-by"],
+  "mechanic_mode": "typing",
+  "arc_hook": "Something fires every eighteen minutes. M. already knew which seconds. Now we need to know how fast.",
+  "puzzle_ids": ["01", "02", "03", "04", "05", "06"],
+  "outro": "Carol marks the six windows on the board. Eighteen minutes between each one. She writes the number in the gap and steps back.\n\nPre-aggregated metrics don't lie the way logs can. Logs get dropped. Counts are already compressed. Whatever filled this table ran on a schedule for at least three hours.\n\nM. was right about the seconds. Now she's asking what it was trying to do."
+}

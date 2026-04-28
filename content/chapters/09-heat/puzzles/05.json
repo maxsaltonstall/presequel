@@ -1,0 +1,34 @@
+{
+  "id": "05",
+  "concept": "rate",
+  "brief": {
+    "speaker": "carol",
+    "text": "Filter to just the hot minutes. Above one event per second."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "minute, rate(n, 1m) AS rps" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "metrics" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "text",    "text": "service = 'chrono-portal-mirror' AND rate(n, 1m) >" },
+    { "type": "blank",   "id": "threshold", "mode": "typed", "placeholder": "threshold" },
+    { "type": "keyword", "text": "ORDER BY" },
+    { "type": "text",    "text": "minute" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT minute, ROUND(n / 60.0, 2) AS rps FROM metrics WHERE service = 'chrono-portal-mirror' AND ROUND(n / 60.0, 2) > 1.0 ORDER BY minute",
+    "order_sensitive": true
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'Too many rows. The threshold should be above the quiet baseline — try 1.0.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'No rows. The threshold is too high — try 1.0.'" },
+    { "when": "error",            "text": "Carol: 'Query error. The threshold is a number — 1.0.'" },
+    { "when": "default",          "text": "Carol: 'rate(n, 1m) > 1.0 — anything above one event per second.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Six rows. Eighteen minutes apart, give or take. That's not noise. That's a schedule."
+  }
+}

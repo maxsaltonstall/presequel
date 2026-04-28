@@ -1,0 +1,36 @@
+{
+  "id": "06",
+  "concept": "rate",
+  "brief": {
+    "speaker": "carol",
+    "text": "During those bursts — what fraction are errors? Show me both rates for the hot minutes."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "minute, rate(n, 1m) AS rps, rate(" },
+    { "type": "blank",   "id": "err_field", "mode": "typed", "placeholder": "field" },
+    { "type": "text",    "text": ", 1m) AS err_rps" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "metrics" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "text",    "text": "service = 'chrono-portal-mirror' AND rate(n, 1m) > 1.0" },
+    { "type": "keyword", "text": "ORDER BY" },
+    { "type": "text",    "text": "minute" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT minute, ROUND(n / 60.0, 2) AS rps, ROUND(errors / 60.0, 2) AS err_rps FROM metrics WHERE service = 'chrono-portal-mirror' AND ROUND(n / 60.0, 2) > 1.0 ORDER BY minute",
+    "order_sensitive": true
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'Too many rows. The WHERE clause filters to hot minutes only.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Not enough rows. The error field is errors.'" },
+    { "when": "error",            "text": "Carol: 'Query error. The field inside the second rate() is errors.'" },
+    { "when": "different_values", "text": "Carol: 'Wrong values. The error field is errors — the error count column.'" },
+    { "when": "default",          "text": "Carol: 'rate(errors, 1m). Same pattern as rps but for the errors column.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Every burst has errors. Not some — every single one. This thing is trying to do something and partially failing every time it fires."
+  }
+}

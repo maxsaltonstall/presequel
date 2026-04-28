@@ -1,0 +1,31 @@
+{
+  "id": "01",
+  "concept": "metrics-schema",
+  "brief": {
+    "speaker": "carol",
+    "text": "Different shape this time. No tags, no messages. Just counts by the minute. Show me ten rows."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "*" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "blank",   "id": "tbl", "mode": "typed", "placeholder": "table name" },
+    { "type": "keyword", "text": "LIMIT" },
+    { "type": "text",    "text": "10" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT * FROM metrics LIMIT 10",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'That's more than ten. LIMIT 10 is already in the query.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Empty result. The table is metrics.'" },
+    { "when": "error",            "text": "Carol: 'Query error. The table is metrics — four columns: minute, service, n, errors.'" },
+    { "when": "default",          "text": "Carol: 'FROM metrics. The table is called metrics.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Right. Minute, service, n, errors. Every minute, every service. That's what we have."
+  }
+}

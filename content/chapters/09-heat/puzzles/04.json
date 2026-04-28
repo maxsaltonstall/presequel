@@ -1,0 +1,36 @@
+{
+  "id": "04",
+  "concept": "rate",
+  "brief": {
+    "speaker": "carol",
+    "text": "Zoom in. Show me every minute for chrono-portal-mirror. Rate and errors both."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "minute, rate(n, 1m) AS rps, rate(" },
+    { "type": "blank",   "id": "err_field", "mode": "typed", "placeholder": "field" },
+    { "type": "text",    "text": ", 1m) AS err_rps" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "metrics" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "text",    "text": "service = 'chrono-portal-mirror'" },
+    { "type": "keyword", "text": "ORDER BY" },
+    { "type": "text",    "text": "minute" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT minute, ROUND(n / 60.0, 2) AS rps, ROUND(errors / 60.0, 2) AS err_rps FROM metrics WHERE service = 'chrono-portal-mirror' ORDER BY minute",
+    "order_sensitive": true
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'Too many rows. The WHERE clause is already filtering to chrono-portal-mirror.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Not enough rows. The error field is errors.'" },
+    { "when": "error",            "text": "Carol: 'Query error. The second rate() field is errors — the error count column.'" },
+    { "when": "different_values", "text": "Carol: 'Wrong values. The error field is errors.'" },
+    { "when": "default",          "text": "Carol: 'rate(errors, 1m). The errors column is the count of error events that minute.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Six spikes. The rest is flat. Whatever this thing is, it doesn't run continuously — it fires and goes quiet."
+  }
+}
