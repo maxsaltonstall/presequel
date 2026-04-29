@@ -330,7 +330,7 @@ Run through this list manually before declaring Milestone A shippable. Expected 
 - [ ] Typing `service:chrono-portal-mirror` → 4 rows ordered by timestamp. Success bubble.
 - [ ] Carol's success text: "Those seconds. She already knew which ones."
 - [ ] Chapter outro plays: Carol's Post-it note, "I want to know how fast it moves."
-- [ ] Outro does NOT auto-advance (Chapter 9 not yet shipped).
+- [ ] Outro auto-advances to Chapter 9.
 
 ### Reference drawer — Chapter 8
 - [ ] Drawer shows 8 concepts: SELECT, FROM, WHERE, GROUP BY, ORDER BY, COUNT, DDSQL tags, Time windows.
