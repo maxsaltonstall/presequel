@@ -336,3 +336,36 @@ Run through this list manually before declaring Milestone A shippable. Expected 
 - [ ] Drawer shows 8 concepts: SELECT, FROM, WHERE, GROUP BY, ORDER BY, COUNT, DDSQL tags, Time windows.
 - [ ] Time windows renders with @timestamp and bucket() sections.
 - [ ] Switching between concepts works; aria-current updates.
+
+## Chapter 9 — Heat (rate function)
+
+### Boot & navigation
+- [ ] Solving Chapter 8 Puzzle 06 auto-advances to Chapter 9; OR set localStorage state to land directly.
+- [ ] Carol's boss intro renders, mentioning pre-aggregated metrics and the rate function.
+- [ ] Progress indicator shows Chapter 9.
+
+### Mechanic — typing (regression)
+- [ ] All Chapter 9 puzzles render text inputs (not dropdowns, not word-bank chips).
+- [ ] Run button is disabled until every blank has at least one character.
+
+### Per-puzzle correctness
+- [ ] **Puzzle 01:** Type `metrics`. Submit. Ten rows returned with columns minute, service, n, errors. Success bubble appears.
+- [ ] **Puzzle 01 wrong path:** Type `logs`. Error hint fires.
+- [ ] **Puzzle 02:** Type `n`. Submit. 20 rows ordered by rps DESC. chrono-portal-mirror spike minutes appear near the top. Success bubble.
+- [ ] **Puzzle 02 wrong path:** Type `errors`. Different values hint fires.
+- [ ] **Puzzle 03:** Type `service`. Submit. 6 rows, chrono-portal-mirror first with peak_rps ≈ 3.x. Success bubble.
+- [ ] **Puzzle 04:** Type `errors`. Submit. 120 rows for chrono-portal-mirror, ordered by minute. Both rps and err_rps columns visible. Success bubble.
+- [ ] **Puzzle 05:** Type `1.0`. Submit. Exactly 6 rows. Success bubble mentions schedule.
+- [ ] **Puzzle 05 wrong path:** Type `3.5`. Zero rows. wrong_count_low hint fires.
+- [ ] **Puzzle 06:** Type `errors`. Submit. 6 rows with both rps and err_rps. Success bubble says "every single one."
+- [ ] **Puzzle 06 wrong path:** Type `n`. Different values hint fires (same rows, wrong second column).
+
+### Outro
+- [ ] After solving Puzzle 06, outro fires.
+- [ ] Carol's outro mentions "eighteen minutes" and "schedule."
+- [ ] Outro does NOT auto-advance (Chapter 10 not yet shipped).
+
+### Reference drawer — Chapter 9
+- [ ] Drawer shows 9 concepts: SELECT, FROM, WHERE, GROUP BY, ORDER BY, DDSQL tags, Time windows, COUNT, rate().
+- [ ] rate() entry renders markdown without error, shows the DDSQL → equivalent table.
+- [ ] Switching between concepts works; aria-current updates.
