@@ -1,0 +1,36 @@
+{
+  "id": "02",
+  "concept": "rate",
+  "brief": {
+    "speaker": "carol",
+    "text": "n is a count per minute. I want events per second. rate(n, 1m) converts it. Show me the top twenty by rate."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "minute, service, rate(" },
+    { "type": "blank",   "id": "field", "mode": "typed", "placeholder": "field" },
+    { "type": "text",    "text": ", 1m) AS rps" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "metrics" },
+    { "type": "keyword", "text": "ORDER BY" },
+    { "type": "text",    "text": "rps DESC" },
+    { "type": "keyword", "text": "LIMIT" },
+    { "type": "text",    "text": "20" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT minute, service, ROUND(n / 60.0, 2) AS rps FROM metrics ORDER BY rps DESC LIMIT 20",
+    "order_sensitive": true
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'Too many rows. LIMIT 20 is already in the query.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Not enough rows. The field should be n.'" },
+    { "when": "error",            "text": "Carol: 'Query error. The field inside rate() is n — just the column name, no quotes.'" },
+    { "when": "different_values", "text": "Carol: 'Wrong values. The field is n — total events per minute.'" },
+    { "when": "default",          "text": "Carol: 'rate(n, 1m). n is the count column. 1m matches the bucket size.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "That's the unit I can think in. Most services running at fractions of a second. Some minutes running hotter."
+  }
+}

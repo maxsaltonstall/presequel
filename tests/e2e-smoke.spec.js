@@ -325,3 +325,43 @@ test('Chapter 8 typing puzzle can be solved', async ({ page }) => {
 
   await expect(page.locator('.bubble.success')).toHaveCount(1, { timeout: 5000 });
 });
+
+test('Chapter 9 typing puzzle can be solved', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => localStorage.clear());
+  await page.reload();
+
+  await page.evaluate(() => {
+    localStorage.setItem('chronoConsultingState-v1', JSON.stringify({
+      currentChapterId: '09-heat',
+      currentPuzzleId: '01',
+      chapters: {
+        '01-onboarding': { completed: true, solved: ['01','02','03','04','05'], attempts: {} },
+        '02-pharaoh':    { completed: true, solved: ['01','02','03','04','05','06'], attempts: {} },
+        '03-speakeasy':  { completed: true, solved: ['01','02','03','04','05','06'], attempts: {} },
+        '04-census':     { completed: true, solved: ['01','02','03','04','05','06'], attempts: {} },
+        '05-tavern':     { completed: true, solved: ['01','02','03','04','05','06'], attempts: {} },
+        '06-reunion':    { completed: true, solved: ['01','02','03','04','05','06'], attempts: {} },
+        '07-static':     { completed: true, solved: ['01','02','03','04','05','06'], attempts: {} },
+        '08-when':       { completed: true, solved: ['01','02','03','04','05','06'], attempts: {} },
+      },
+      referenceOpened: [],
+      savedAt: Date.now(),
+    }));
+  });
+  await page.reload();
+
+  await expect(page.locator('.bubble')).toHaveCount(2, { timeout: 5000 });
+  await expect(page.locator('.bubble').last()).toContainText('counts by the minute');
+
+  const inputs = page.locator('.typed-input');
+  await expect(inputs).toHaveCount(1);
+
+  await inputs.nth(0).fill('metrics');
+
+  const runBtn = page.locator('#run-btn');
+  await expect(runBtn).toBeEnabled();
+  await runBtn.click();
+
+  await expect(page.locator('.bubble.success')).toHaveCount(1, { timeout: 5000 });
+});
