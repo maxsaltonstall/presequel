@@ -6,7 +6,7 @@ import { initReference, setChapterForReference } from './reference.js';
 
 const BOOT_CHAPTER = '01-onboarding';
 
-const CHAPTER_ORDER = ['01-onboarding', '02-pharaoh', '03-speakeasy', '04-census', '05-tavern', '06-reunion', '07-static', '08-when'];
+const CHAPTER_ORDER = ['01-onboarding', '02-pharaoh', '03-speakeasy', '04-census', '05-tavern', '06-reunion', '07-static', '08-when', '09-heat'];
 
 function nextChapterId(currentId) {
   const idx = CHAPTER_ORDER.indexOf(currentId);
