@@ -61,14 +61,13 @@ export function translateRate(sql) {
 const PTF_NAMES = new Set(['logs', 'spans']);
 
 export function translatePTF(sql) {
-  const unknownMatch = sql.match(/\bFROM\s+(\w+)\s*\([^)]*\)/i);
-  if (unknownMatch && !PTF_NAMES.has(unknownMatch[1].toLowerCase())) {
-    throw new Error(`Unknown PTF: ${unknownMatch[1]}(). Available sources: logs(), spans()`);
-  }
-  let result = sql.replace(
-    /\bFROM\s+(logs|spans)\s*\(([^)]*)\)/gi,
+  const result = sql.replace(
+    /\bFROM\s+(\w+)\s*\(([^)]*)\)/gi,
     (match, ptf, args) => {
       const name = ptf.toLowerCase();
+      if (!PTF_NAMES.has(name)) {
+        throw new Error(`Unknown PTF: ${ptf}(). Available sources: logs(), spans()`);
+      }
       const trimmed = args.trim();
       if (!trimmed) return `FROM ${name}`;
       return `FROM ${name} WHERE ${translateRun(trimmed)}`;

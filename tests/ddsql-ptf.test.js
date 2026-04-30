@@ -82,3 +82,17 @@ test('negation tag: FROM logs(-level:info) → != condition', () => {
     "SELECT * FROM logs WHERE tags['level'] != 'info' LIMIT 10"
   );
 });
+
+test('no-arg PTF with existing WHERE — WHERE preserved unchanged', () => {
+  assert.equal(
+    translatePTF("SELECT * FROM logs() WHERE level = 'error'"),
+    "SELECT * FROM logs WHERE level = 'error'"
+  );
+});
+
+test('unknown PTF in any position throws typed error', () => {
+  assert.throws(
+    () => translatePTF('SELECT * FROM logs(service:auth-svc), (SELECT * FROM traces(env:prod)) t'),
+    /Unknown PTF/
+  );
+});
