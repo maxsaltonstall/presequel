@@ -102,7 +102,7 @@ Three tables loaded at chapter init via `seed.sql` from `content/chapters/10-rea
 
 ### Puzzle 01 — PTF intro (warm-up with auth-svc)
 
-**Brief:** "System's back online. Pull me ten rows from auth-svc — I want to see if logs are flowing."
+**Brief:** *(Embedded in boss intro — see Narrative beats below. Final line: "Give me ten rows from auth-svc.")*
 
 **Query:**
 ```sql
@@ -112,17 +112,19 @@ SELECT timestamp, message FROM logs(___) LIMIT 10
 
 **Expected result:** 10 rows, timestamp + message from auth-svc logs.
 
-**Success:** "Good. Logs are back online. Now let's see what else is in here."
+**Success:**
+> "Good. Logs are flowing. Whatever they did to the stack last week, this part still works."
 
 **Wrong paths:**
-- Wrong service name → 0 rows → wrong_count_low hint
-- Missing `service:` prefix (just `auth-svc`) → translator error hint (invalid tag syntax)
+- Wrong service name → 0 rows → hint: *"Nothing came back. The tag filter is exact — check the service name, including the hyphen."*
+- Missing `service:` prefix (just `auth-svc`) → translator error → hint: *"That's not valid tag syntax. The format is `key:value` — try `service:auth-svc`."*
 
 ---
 
 ### Puzzle 02 — Find the phantom in logs
 
-**Brief:** "Same query. Different service."
+**Brief:**
+> "Now the one I actually want. Same query, different service. Let's find out if it left a trace."
 
 **Query:**
 ```sql
@@ -130,19 +132,23 @@ SELECT timestamp, message FROM logs(___) LIMIT 20
 ```
 **Blank:** `service:chrono-portal-mirror`
 
-**Expected result:** ~20 phantom log rows.
+**Expected result:** ~20 phantom log rows (LIMIT 20 of ~80 total).
 
-**Success:** "It's in the logs. Twenty rows. That's not a ghost — that's a service that ran."
+**Success:**
+> "Eighty rows. I ran it twice to make sure.
+>
+> That's not a ghost. A ghost is one event, maybe two, then nothing. Eighty rows means this service *ran*. Regularly. And nobody registered it."
 
 **Wrong paths:**
-- auth-svc or other valid service → wrong rows → different_values hint
-- Wrong service name → 0 rows → wrong_count_low hint
+- `auth-svc` or other valid service → different rows → hint: *"Those are real rows, but that's not the service we're looking for."*
+- Unrecognized service → 0 rows → hint: *"Zero rows. The tag filter is exact — check the spelling."*
 
 ---
 
 ### Puzzle 03 — Error characterization
 
-**Brief:** "How many of those are errors? Filter it down."
+**Brief:**
+> "How many of those are errors? I want to see just the errors, most recent first."
 
 **Query:**
 ```sql
@@ -152,17 +158,25 @@ SELECT timestamp, message FROM logs(service:chrono-portal-mirror ___) ORDER BY t
 
 **Expected result:** ~10 error-level logs in reverse chronological order.
 
-**Success:** "All errors. Every log from this service is an error. Something kept trying and kept failing."
+**Success:**
+> "Eighty rows. Eighty errors.
+>
+> Not *some* errors. Not *mostly* errors. Every single log line from this service is an error. It ran for three hours, fired eighteen times, and failed every time. Something kept trying and kept failing and never stopped trying.
+>
+> That's not a bug. That's a design."
 
 **Wrong paths:**
-- `level:info` → 0 rows → wrong_count_low hint
-- `level:warning` → 0 rows → wrong_count_low hint
+- `level:info` → 0 rows → hint: *"Zero rows — this service never logged at info level. Try something darker."*
+- `level:warning` → 0 rows → hint: *"Zero rows. No warnings either. There's only one level in these logs."*
 
 ---
 
 ### Puzzle 04 — Introduce spans
 
-**Brief:** "Logs tell you what happened. Spans tell you what a service *called*. Different table, same syntax."
+**Brief:**
+> "Logs tell you what a service *said*. Spans tell you what it *called* — what it talked to, how long each call took, whether the downstream responded.
+>
+> Different table. Same syntax. Fill in the source."
 
 **Query:**
 ```sql
@@ -170,19 +184,23 @@ SELECT trace_id, operation, duration_ms, called_service FROM ___(service:chrono-
 ```
 **Blank:** `spans`
 
-**Expected result:** 10 span rows showing trace_id, operation, duration_ms, called_service.
+**Expected result:** 10 span rows with trace_id, operation, duration_ms, called_service visible.
 
-**Success:** "Different shape. You can see the duration and what it was talking to."
+**Success:**
+> "Different shape. You've got trace IDs, duration in milliseconds. And that last column — `called_service`.
+>
+> It was talking to something."
 
 **Wrong paths:**
-- `logs` → rows returned but no `called_service` column → error hint about column not found
-- `metrics` → unknown PTF error → hint
+- `logs` → DuckDB error (no `called_service` column) → hint: *"That's the logs table — there's no `called_service` column in logs. I need the other one."*
+- `metrics` → unknown PTF error → hint: *"We don't have a `metrics` PTF in scope here. Try `logs` or `spans`."*
 
 ---
 
 ### Puzzle 05 — Aggregate called_service
 
-**Brief:** "What was it calling? Group those spans."
+**Brief:**
+> "Group those spans by what it was calling. I want counts."
 
 **Query:**
 ```sql
@@ -193,19 +211,29 @@ ORDER BY call_count DESC
 ```
 **Blank:** `called_service`
 
-**Expected result:** 2 rows — `chrono-archive` (N calls), `chrono-ledger` (N calls).
+**Expected result:** 2 rows — `chrono-archive` (31 calls), `chrono-ledger` (12 calls). (Exact counts determined by generator; ratio ~3:1.)
 
-**Success:** "`chrono-archive` and `chrono-ledger`. It was querying the firm's own document stores. Not external. Internal. It was looking for something in here."
+**Success:**
+> "`chrono-archive`. `chrono-ledger`.
+>
+> Not external endpoints. Not a third-party API. Those are *ours*. `chrono-archive` is where we keep founding documents, old client contracts, everything that predates the digital catalog. `chrono-ledger` is the billing and engagement history going back to — nobody's checked how far back it goes.
+>
+> Thirty-one calls to `chrono-archive`. Twelve to `chrono-ledger`.
+>
+> It wasn't generating traffic. It was looking for something. In our oldest files."
 
 **Wrong paths:**
-- `service` (from tags) → single row, wrong shape → different_values hint
-- `operation` → multiple rows, wrong grouping → different_values hint
+- `service` → 1 row, wrong shape → hint: *"That's grouping by the service itself — you'd get one row. I want to know what it was calling, not which service it is."*
+- `operation` → multiple rows, wrong data → hint: *"That's grouping by the operation name. I want to see the downstream services, not the call types."*
 
 ---
 
 ### Puzzle 06 — Catalog check
 
-**Brief:** "One last check. Is it in the catalog?"
+**Brief:**
+> "One last thing. It's been running, it's been calling our systems, and nobody flagged it. So either it's registered and I missed it — or it isn't.
+>
+> Query the catalog. Service name."
 
 **Query:**
 ```sql
@@ -213,34 +241,49 @@ SELECT * FROM services WHERE service_name = '___'
 ```
 **Blank:** `chrono-portal-mirror`
 
-**Expected result:** 0 rows (that's the correct answer — 0 rows means success).
+**Expected result:** 0 rows (success condition).
 
-**Success:** "Zero rows. It's in logs, in spans — and nowhere in the catalog. Carol opens the founding documents in chrono-archive. Two columns of names. The second column is redacted."
+**Success:**
+> "Zero rows.
+>
+> It's in the logs. It's in the spans. It called our oldest document stores forty-three times in three hours.
+>
+> And it doesn't exist."
 
 **Wrong paths:**
-- A real service name (e.g. `auth-svc`) → rows returned → wrong_count_high hint
+- A real service name (e.g. `auth-svc`) → rows returned → hint: *"That service exists. We're looking for one that doesn't."*
 
 **Note on puzzle correctness:** P6 accepts any 0-row result as success — the educational point is that the service is absent from the catalog. Any misspelled or made-up name also returns 0 rows, which is fine (player still confirmed absence). The puzzle.json `expected` block should specify `row_count: 0`.
 
 ## Narrative beats
 
-### Boss intro
+### Boss intro (`chapter.boss_intro`)
 
-Carol is at her desk. A security badge with no photo sits face-down on the corner of it — she doesn't comment on it. She briefs the player while clearly distracted:
-
-> "M. wants to know where else it shows up. Logs I can search. But logs only tell you what a service said. I want to know what it *talked to*. Let's start with what we have."
-
-The badge is a visual detail in Carol's narration, not a dialogue beat.
+> "Something landed on my desk this morning. Face-down. She didn't say what it was and I didn't ask — you learn, after a while, which questions M. will actually answer.
+>
+> I turned it over after she left. Security badge. Old format, the kind we stopped issuing about eight years ago. The photo slot is empty. The name field has been redacted with a marker, but whoever did it was thorough — you can't read it in any light.
+>
+> I put it back face-down. Some things you look at when you're ready.
+>
+> Right now I need to know where this service shows up. Logs first. Give me ten rows from auth-svc — I want to make sure the pipeline's running before we look at anything that matters."
 
 ### Chapter outro
 
-> Carol puts down the founding documents. The second name was redacted in every copy she found — digitized archives, printed copies, the onboarding packet from when the firm hired her three years ago.
+> Carol pulls up `chrono-archive` directly. Not through a query — she just opens the file browser.
 >
-> Consistent redaction is editorial. Someone decided this person doesn't exist.
+> The founding documents are scanned images. She finds the incorporation record: two columns of signatures. The first column has names she recognizes. The second column is redacted — not digitally, but physically. Black marker, applied before the document was ever scanned.
 >
-> She tapes the badge to the whiteboard next to the six spike windows. Then she sits down and pulls up the spans again. `chrono-archive`. `chrono-ledger`. The firm's oldest document stores — the ones that predate the catalog, the ones no one migrated because no one was sure what was in them.
+> She checks three more copies. Same redaction, same hand, maybe. Consistent redaction is editorial. Someone decided this person doesn't exist, and they decided it before the documents went digital.
 >
-> M.'s question was never *where* the service was. It was *what it was looking for*.
+> She picks up the badge from her desk and turns it over again. The name field: same black marker. Same pressure.
+>
+> She tapes it to the whiteboard next to the six spike windows from last week.
+>
+> Forty-three calls to the oldest stores in the firm. Whatever it was looking for — it was looking in the parts nobody audits. The parts that predate the people who work here. The parts that predate *her*.
+>
+> M. knocked on her door an hour ago and asked if she'd found anything.
+>
+> Carol said not yet.
 
 ### Auto-advance
 
