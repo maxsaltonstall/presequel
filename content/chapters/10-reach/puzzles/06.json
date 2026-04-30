@@ -1,0 +1,32 @@
+{
+  "id": "06",
+  "concept": "ptf-catalog-check",
+  "brief": {
+    "speaker": "carol",
+    "text": "One last thing. It's been running, it's been calling our systems, and nobody flagged it. So either it's registered and I missed it — or it isn't.\n\nQuery the catalog. Service name."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "*" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "services" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "text",    "text": "service_name = '" },
+    { "type": "blank",   "id": "svc_name", "mode": "typed", "placeholder": "service name" },
+    { "type": "text",    "text": "'" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT * FROM services WHERE service_name = 'chrono-portal-mirror'",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'That service exists. We\\'re looking for one that doesn\\'t.'" },
+    { "when": "error",            "text": "Carol: 'Query error. The table is services, column is service_name.'" },
+    { "when": "default",          "text": "Carol: 'chrono-portal-mirror — the exact service name.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Zero rows.\n\nIt's in the logs. It's in the spans. It called our oldest document stores forty-three times in three hours.\n\nAnd it doesn't exist."
+  }
+}

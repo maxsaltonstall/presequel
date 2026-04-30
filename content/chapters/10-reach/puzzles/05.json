@@ -1,0 +1,34 @@
+{
+  "id": "05",
+  "concept": "ptf-spans-aggregate",
+  "brief": {
+    "speaker": "carol",
+    "text": "Group those spans by what it was calling. I want counts."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "called_service, COUNT(*) as call_count" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "spans(service:chrono-portal-mirror)" },
+    { "type": "keyword", "text": "GROUP BY" },
+    { "type": "blank",   "id": "group_col", "mode": "typed", "placeholder": "column" },
+    { "type": "keyword", "text": "ORDER BY" },
+    { "type": "text",    "text": "call_count DESC" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT called_service, COUNT(*) as call_count FROM spans WHERE tags['service'] = 'chrono-portal-mirror' GROUP BY called_service ORDER BY call_count DESC",
+    "order_sensitive": true
+  },
+  "hints": [
+    { "when": "error",            "text": "Carol: 'Query error. Group by the column you\\'re selecting — called_service.'" },
+    { "when": "different_values", "text": "Carol: 'Wrong grouping. I want the downstream services — the called_service column.'" },
+    { "when": "wrong_count_high", "text": "Carol: 'Too many rows. You\\'re grouping by something too specific.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Too few rows. You\\'re grouping by something too broad.'" },
+    { "when": "default",          "text": "Carol: 'called_service — the column showing what it was talking to.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "chrono-archive. chrono-ledger.\n\nNot external endpoints. Not a third-party API. Those are ours. chrono-archive is where we keep founding documents, old client contracts, everything that predates the digital catalog. chrono-ledger is the billing and engagement history going back to — nobody's checked how far back it goes.\n\nThirty-one calls to chrono-archive. Twelve to chrono-ledger.\n\nIt wasn't generating traffic. It was looking for something. In our oldest files."
+  }
+}
