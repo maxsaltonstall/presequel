@@ -1,0 +1,18 @@
+{
+  "id": "10-reach",
+  "ordinal": 10,
+  "title": "Reach",
+  "era": "Chrono Consulting HQ, present day",
+  "client": {
+    "name": "Carol",
+    "portrait": "carol.svg",
+    "voice": "dry, tired, weirdly protective"
+  },
+  "boss_intro": "Something landed on my desk this morning. Face-down. She didn't say what it was and I didn't ask — you learn, after a while, which questions M. will actually answer.\n\nI turned it over after she left. Security badge. Old format, the kind we stopped issuing about eight years ago. The photo slot is empty. The name field has been redacted with a marker, but whoever did it was thorough — you can't read it in any light.\n\nI put it back face-down. Some things you look at when you're ready.\n\nRight now I need to know where this service shows up. Logs first. Give me ten rows from auth-svc — I want to make sure the pipeline's running before we look at anything that matters.",
+  "concepts_introduced": ["ptfs"],
+  "concepts_reviewed": ["select", "from", "where", "group-by", "order-by"],
+  "mechanic_mode": "typing",
+  "arc_hook": "Eighty rows. That's not a ghost. A ghost is one event, maybe two, then nothing.",
+  "puzzle_ids": ["01", "02", "03", "04", "05", "06"],
+  "outro": "Carol pulls up chrono-archive directly. Not through a query — she just opens the file browser.\n\nThe founding documents are scanned images. She finds the incorporation record: two columns of signatures. The first column has names she recognizes. The second column is redacted — not digitally, but physically. Black marker, applied before the document was ever scanned.\n\nShe checks three more copies. Same redaction, same hand, maybe. Consistent redaction is editorial. Someone decided this person doesn't exist, and they decided it before the documents went digital.\n\nShe picks up the badge from her desk and turns it over again. The name field: same black marker. Same pressure.\n\nShe tapes it to the whiteboard next to the six spike windows from last week.\n\nForty-three calls to the oldest stores in the firm. Whatever it was looking for — it was looking in the parts nobody audits. The parts that predate the people who work here. The parts that predate her.\n\nM. knocked on her door an hour ago and asked if she'd found anything.\n\nCarol said not yet."
+}

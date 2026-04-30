@@ -1,0 +1,32 @@
+{
+  "id": "04",
+  "concept": "ptf-spans-intro",
+  "brief": {
+    "speaker": "carol",
+    "text": "Logs tell you what a service said. Spans tell you what it called — what it talked to, how long each call took, whether the downstream responded.\n\nDifferent table. Same syntax. Fill in the source."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "trace_id, operation, duration_ms, called_service" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "blank",   "id": "source", "mode": "typed", "placeholder": "source name" },
+    { "type": "text",    "text": "(service:chrono-portal-mirror)" },
+    { "type": "keyword", "text": "LIMIT" },
+    { "type": "text",    "text": "10" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT trace_id, operation, duration_ms, called_service FROM spans WHERE tags['service'] = 'chrono-portal-mirror' LIMIT 10",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "error",            "text": "Carol: 'Query error. The table with trace IDs and called_service is spans.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Zero rows. The spans table has the data — try spans.'" },
+    { "when": "wrong_count_high", "text": "Carol: 'Too many rows. LIMIT 10 is in the query.'" },
+    { "when": "default",          "text": "Carol: 'spans — the table that tracks inter-service calls.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Different shape. You've got trace IDs, duration in milliseconds. And that last column — called_service.\n\nIt was talking to something."
+  }
+}

@@ -363,9 +363,52 @@ Run through this list manually before declaring Milestone A shippable. Expected 
 ### Outro
 - [ ] After solving Puzzle 06, outro fires.
 - [ ] Carol's outro mentions "eighteen minutes" and "schedule."
-- [ ] Outro does NOT auto-advance (Chapter 10 not yet shipped).
+- [ ] Outro auto-advances to Chapter 10.
 
 ### Reference drawer — Chapter 9
 - [ ] Drawer shows 9 concepts: SELECT, FROM, WHERE, GROUP BY, ORDER BY, DDSQL tags, Time windows, COUNT, rate().
 - [ ] rate() entry renders markdown without error, shows the DDSQL → equivalent table.
 - [ ] Switching between concepts works; aria-current updates.
+
+## Chapter 10 — Reach (PTFs)
+
+### Boot & navigation
+- [ ] Solving Chapter 9 Puzzle 06 auto-advances to Chapter 10; OR set localStorage state to land directly.
+- [ ] Carol's boss-intro bubble mentions the badge face-down on the desk.
+- [ ] Progress indicator shows "Reach · Puzzle 1 of 6".
+- [ ] Reference drawer shows PTFs tab alongside SELECT, FROM, WHERE, GROUP BY, ORDER BY, DDSQL tags, Time windows, rate().
+
+### Puzzle 01 — PTF intro
+- [ ] One typed input visible.
+- [ ] Typing `service:auth-svc` → 10 rows. Success: "Good. Logs are flowing."
+- [ ] Wrong path: typing just `auth-svc` (no `service:` prefix) → error hint about tag syntax.
+
+### Puzzle 02 — Find phantom in logs
+- [ ] Typing `service:chrono-portal-mirror` → 20 rows. Success: "Eighty rows."
+- [ ] Wrong path: misspelled service name → wrong_count_low hint.
+
+### Puzzle 03 — Error filter
+- [ ] Typing `level:error` → 10 rows, all errors. Success: "That's not a bug. That's a design."
+- [ ] Wrong path: `level:info` → 0 rows → wrong_count_low hint.
+
+### Puzzle 04 — Introduce spans
+- [ ] Typing `spans` → 10 rows with called_service column visible. Success: "It was talking to something."
+- [ ] Wrong path: typing `logs` → error hint (no called_service in logs).
+
+### Puzzle 05 — Aggregate called_service
+- [ ] Typing `called_service` → 2 rows: chrono-archive (31), chrono-ledger (12). Success mentions "thirty-one calls."
+- [ ] Wrong path: typing `operation` → wrong rows → different_values hint.
+
+### Puzzle 06 — Catalog check
+- [ ] Typing `chrono-portal-mirror` → 0 rows → success: "And it doesn't exist."
+- [ ] Wrong path: real service name (e.g. `auth-svc`) → wrong_count_high hint fires.
+
+### Outro
+- [ ] After solving Puzzle 06, outro fires.
+- [ ] Carol's outro mentions "founding documents" and "Carol said not yet."
+- [ ] Chapter 10 does NOT auto-advance (Chapter 11 not yet shipped).
+
+### Reference drawer — Chapter 10
+- [ ] Drawer shows 9 concepts: SELECT, FROM, WHERE, GROUP BY, ORDER BY, DDSQL tags, Time windows, rate(), PTFs.
+- [ ] PTFs entry renders without error, shows available sources table.
+- [ ] Switching between concepts works.

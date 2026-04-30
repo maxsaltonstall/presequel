@@ -1,0 +1,35 @@
+{
+  "id": "03",
+  "concept": "ptf-error-filter",
+  "brief": {
+    "speaker": "carol",
+    "text": "How many of those are errors? I want to see just the errors, most recent first."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "timestamp, message" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "logs(service:chrono-portal-mirror" },
+    { "type": "blank",   "id": "level_filter", "mode": "typed", "placeholder": "level filter" },
+    { "type": "text",    "text": ")" },
+    { "type": "keyword", "text": "ORDER BY" },
+    { "type": "text",    "text": "timestamp DESC" },
+    { "type": "keyword", "text": "LIMIT" },
+    { "type": "text",    "text": "10" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT timestamp, message FROM logs WHERE tags['service'] = 'chrono-portal-mirror' AND tags['level'] = 'error' ORDER BY timestamp DESC LIMIT 10",
+    "order_sensitive": true
+  },
+  "hints": [
+    { "when": "wrong_count_low",  "text": "Carol: 'Zero rows. This service only logs errors — try level:error.'" },
+    { "when": "wrong_count_high", "text": "Carol: 'Too many. Add a level filter.'" },
+    { "when": "error",            "text": "Carol: 'Query error. The level filter goes inside the parens: level:error.'" },
+    { "when": "default",          "text": "Carol: 'level:error — add it after the service filter, space-separated.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Eighty rows. Eighty errors.\n\nNot some errors. Not mostly errors. Every single log line from this service is an error. It ran for three hours, fired eighteen times, and failed every time. Something kept trying and kept failing and never stopped trying.\n\nThat's not a bug. That's a design."
+  }
+}

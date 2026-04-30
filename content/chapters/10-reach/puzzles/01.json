@@ -1,0 +1,33 @@
+{
+  "id": "01",
+  "concept": "ptf-intro",
+  "brief": {
+    "speaker": "carol",
+    "text": "Give me ten rows from auth-svc."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "timestamp, message" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "logs(" },
+    { "type": "blank",   "id": "filter", "mode": "typed", "placeholder": "tag filter" },
+    { "type": "text",    "text": ")" },
+    { "type": "keyword", "text": "LIMIT" },
+    { "type": "text",    "text": "10" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT timestamp, message FROM logs WHERE tags['service'] = 'auth-svc' LIMIT 10",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_low",  "text": "Carol: 'Nothing came back. The tag filter is exact — try service:auth-svc.'" },
+    { "when": "wrong_count_high", "text": "Carol: 'Too many rows. LIMIT 10 is already in the query.'" },
+    { "when": "error",            "text": "Carol: 'Query error. The tag syntax is key:value — try service:auth-svc.'" },
+    { "when": "default",          "text": "Carol: 'service:auth-svc — key colon value, no quotes, no spaces.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Good. Logs are flowing. Whatever they did to the stack last week, this part still works."
+  }
+}
