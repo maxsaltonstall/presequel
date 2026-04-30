@@ -57,3 +57,22 @@ export function translateRate(sql) {
     `ROUND(${field} / 60.0, 2)`
   );
 }
+
+const PTF_NAMES = new Set(['logs', 'spans']);
+
+export function translatePTF(sql) {
+  const unknownMatch = sql.match(/\bFROM\s+(\w+)\s*\([^)]*\)/i);
+  if (unknownMatch && !PTF_NAMES.has(unknownMatch[1].toLowerCase())) {
+    throw new Error(`Unknown PTF: ${unknownMatch[1]}(). Available sources: logs(), spans()`);
+  }
+  let result = sql.replace(
+    /\bFROM\s+(logs|spans)\s*\(([^)]*)\)/gi,
+    (match, ptf, args) => {
+      const name = ptf.toLowerCase();
+      const trimmed = args.trim();
+      if (!trimmed) return `FROM ${name}`;
+      return `FROM ${name} WHERE ${translateRun(trimmed)}`;
+    }
+  );
+  return result.replace(/\bWHERE\b\s*([\s\S]+?)\s*\bWHERE\b\s*/i, 'WHERE $1 AND ');
+}
