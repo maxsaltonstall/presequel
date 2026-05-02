@@ -107,6 +107,18 @@ const CONCEPTS_FOR_CHAPTER = {
     { slug: 'rate',                 title: 'rate()' },
     { slug: 'ptfs',                 title: 'PTFs' },
   ],
+  '11-catalog': [
+    { slug: 'select',               title: 'SELECT' },
+    { slug: 'from',                 title: 'FROM' },
+    { slug: 'where',                title: 'WHERE' },
+    { slug: 'group-by',             title: 'GROUP BY' },
+    { slug: 'order-by',             title: 'ORDER BY' },
+    { slug: 'ddsql-tags',           title: 'DDSQL tags' },
+    { slug: 'time-windows',         title: 'Time windows' },
+    { slug: 'rate',                 title: 'rate()' },
+    { slug: 'ptfs',                 title: 'PTFs' },
+    { slug: 'tag-join',             title: 'Tag joins' },
+  ],
 };
 
 let currentSlug = null;
