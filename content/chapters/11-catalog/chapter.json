@@ -1,0 +1,18 @@
+{
+  "id": "11-catalog",
+  "ordinal": 11,
+  "title": "The Catalog",
+  "era": "Chrono Consulting HQ, present day",
+  "client": {
+    "name": "Carol",
+    "portrait": "carol.svg",
+    "voice": "dry, tired, weirdly protective"
+  },
+  "boss_intro": "I found the second badge this morning.\n\nSame format as the first. Same redaction pen — you can tell by the pressure, the way the marker bleeds at the edges. Same empty photo slot.\n\nThere are two of them now. I've got them both taped to the whiteboard.\n\nI've been sitting here for twenty minutes not running the query I already know how to run. At some point you just have to look at what's there.\n\nLet me show you what a join does first. Then we'll use it.",
+  "concepts_introduced": ["tag-join"],
+  "concepts_reviewed": ["select", "from", "where", "group-by", "order-by", "ddsql-tags", "ptfs"],
+  "mechanic_mode": "typing",
+  "arc_hook": "Two of them. One I've been tracking for three weeks. One I've never seen before today.",
+  "puzzle_ids": ["01", "02", "03", "04", "05", "06", "07"],
+  "outro": "The door opens without a knock.\n\nCarol doesn't turn around. She's looking at the whiteboard: two badges, six spike windows, a printed query result with two service names highlighted.\n\n\"You found something,\" the woman says. Not a question.\n\nCarol turns. She's seen the portraits — the founding documents, the old all-hands photos. She knows the face.\n\n\"Two somethings,\" Carol says.\n\nM. crosses to the whiteboard. She looks at the badges for a long time. Not surprised. Not unsurprised. Something else.\n\n\"One of these,\" she says, \"I put here.\"\n\nShe doesn't say which one.\n\nShe doesn't say when."
+}
