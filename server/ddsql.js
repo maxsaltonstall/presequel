@@ -75,3 +75,13 @@ export function translatePTF(sql) {
   );
   return result.replace(/\bWHERE\b\s*([\s\S]+?)\s*\bWHERE\b\s*/i, 'WHERE $1 AND ');
 }
+
+export function translateTagJoin(sql) {
+  if (!/\btags\.\w+\b/i.test(sql)) return sql;
+  const fromMatch = sql.match(/\bFROM\s+(\w+)\b/i);
+  if (!fromMatch) {
+    throw new Error('tags. syntax in JOIN requires a named FROM table. Example: FROM logs JOIN services ON tags.service = service_name');
+  }
+  const fromTable = fromMatch[1].toLowerCase();
+  return sql.replace(/\btags\.(\w+)\b/gi, (_, key) => `${fromTable}.tags['${key.toLowerCase()}']`);
+}
