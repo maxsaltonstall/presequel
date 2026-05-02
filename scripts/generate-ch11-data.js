@@ -210,8 +210,8 @@ async function main() {
   if (exportCount  !== 13) throw new Error(`Expected 13 export spans, got ${exportCount}`);
   if (reportCount  !== 7)  throw new Error(`Expected 7 reporting spans, got ${reportCount}`);
 
-  const db   = await DuckDBInstance.create(':memory:');
-  const conn = await db.connect();
+  const instance = await DuckDBInstance.create(':memory:');
+  const conn = await instance.connect();
 
   await conn.run(`
     CREATE TABLE logs (
