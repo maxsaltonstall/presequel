@@ -1,0 +1,35 @@
+{
+  "id": "01",
+  "concept": "tag-join-intro",
+  "brief": {
+    "speaker": "carol",
+    "text": "Let me show you what a join does first. Then we'll use it."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "timestamp, message, tags['service'] as service, team" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "logs" },
+    { "type": "keyword", "text": "JOIN" },
+    { "type": "text",    "text": "services" },
+    { "type": "keyword", "text": "ON" },
+    { "type": "blank",   "id": "join_cond", "mode": "typed", "placeholder": "join condition" },
+    { "type": "keyword", "text": "LIMIT" },
+    { "type": "text",    "text": "10" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT timestamp, message, logs.tags['service'] as service, team FROM logs JOIN services ON logs.tags['service'] = service_name LIMIT 10",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "error",            "text": "Carol: 'Query error. Connect the two tables with tags.service = service_name.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Zero rows. The join condition connects tag values to catalog columns — try tags.service = service_name.'" },
+    { "when": "wrong_count_high", "text": "Carol: 'Too many rows. LIMIT 10 is already there.'" },
+    { "when": "default",          "text": "Carol: 'tags.service = service_name — the service tag matches the catalog column.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Look at that. Every log row now has a team attached. That's what a join does — it reaches across tables and staples the context on."
+  }
+}

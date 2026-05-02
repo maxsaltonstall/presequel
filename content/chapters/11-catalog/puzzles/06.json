@@ -1,0 +1,31 @@
+{
+  "id": "06",
+  "concept": "tag-join-anti-join",
+  "brief": {
+    "speaker": "carol",
+    "text": "Show me only the services that aren't in the catalog. Nothing else."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "DISTINCT tags['service'] as service" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "logs LEFT JOIN services ON tags.service = service_name" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "blank",   "id": "anti_filter", "mode": "typed", "placeholder": "null check" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT DISTINCT tags['service'] as service FROM logs LEFT JOIN services ON logs.tags['service'] = service_name WHERE service_name IS NULL",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'That includes the registered services. Filter to those missing from the catalog.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Zero rows. Flip the condition — I want the ones without a catalog match.'" },
+    { "when": "error",            "text": "Carol: 'Query error. Check for a NULL catalog column — service_name IS NULL.'" },
+    { "when": "default",          "text": "Carol: 'service_name IS NULL — the anti-join pattern. No match means the catalog column is empty.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "chrono-portal-mirror. log-sync-svc.\n\nTwo of them. One I've been tracking for three weeks. One I've never seen before today.\n\nlog-sync-svc first appeared twenty-nine days ago. It's been calling export-svc and reporting-svc. It's not looking for old documents. It's moving data somewhere.\n\nI don't know where."
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "04",
+  "concept": "tag-join-count-nulls",
+  "brief": {
+    "speaker": "carol",
+    "text": "Show me every service in the logs — registered or not — with their team and how many log lines they have."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "tags['service'] as service, team, COUNT(*) as log_count" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "logs LEFT JOIN services ON tags.service = service_name" },
+    { "type": "keyword", "text": "GROUP BY" },
+    { "type": "blank",   "id": "group_cols", "mode": "typed", "placeholder": "columns" },
+    { "type": "keyword", "text": "ORDER BY" },
+    { "type": "text",    "text": "log_count DESC" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT tags['service'] as service, team, COUNT(*) as log_count FROM logs LEFT JOIN services ON logs.tags['service'] = service_name GROUP BY tags['service'], team ORDER BY log_count DESC",
+    "order_sensitive": true
+  },
+  "hints": [
+    { "when": "error",            "text": "Carol: 'Query error. Group by both columns in the SELECT — tags[\\'service\\'], team.'" },
+    { "when": "different_values", "text": "Carol: 'Wrong grouping. Include team in the GROUP BY so the NULLs show up separately.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Too few rows. You may be collapsing the NULL team rows — group by tags[\\'service\\'], team.'" },
+    { "when": "default",          "text": "Carol: 'tags[\\'service\\'], team — both columns from the SELECT list.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Most have a team. Two don't.\n\nI'm going to need a minute."
+  }
+}

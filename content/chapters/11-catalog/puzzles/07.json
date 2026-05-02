@@ -1,0 +1,37 @@
+{
+  "id": "07",
+  "concept": "tag-join-boss-fight",
+  "brief": {
+    "speaker": "carol",
+    "text": "Give me the total event count for every unregistered service, across both sources."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "combined.service, SUM(event_count) as total_events" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "(\n  SELECT tags['service'] as service, COUNT(*) as event_count FROM logs GROUP BY service\n  UNION ALL\n  SELECT tags['service'] as service, COUNT(*) as event_count FROM spans GROUP BY service\n) combined" },
+    { "type": "keyword", "text": "LEFT JOIN" },
+    { "type": "text",    "text": "services ON combined.service = service_name" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "blank",   "id": "anti_filter", "mode": "typed", "placeholder": "null check" },
+    { "type": "keyword", "text": "GROUP BY" },
+    { "type": "text",    "text": "combined.service" },
+    { "type": "keyword", "text": "ORDER BY" },
+    { "type": "text",    "text": "total_events DESC" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT combined.service, SUM(event_count) as total_events FROM (SELECT tags['service'] as service, COUNT(*) as event_count FROM logs GROUP BY service UNION ALL SELECT tags['service'] as service, COUNT(*) as event_count FROM spans GROUP BY service) combined LEFT JOIN services ON combined.service = service_name WHERE service_name IS NULL GROUP BY combined.service ORDER BY total_events DESC",
+    "order_sensitive": true
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'That includes the registered services. Filter to just the unregistered ones.'" },
+    { "when": "wrong_count_low",  "text": "Carol: 'Zero rows. The same anti-join pattern from P6 works here — service_name IS NULL.'" },
+    { "when": "error",            "text": "Carol: 'Query error. The WHERE clause filters the outer join — try service_name IS NULL.'" },
+    { "when": "default",          "text": "Carol: 'service_name IS NULL — same anti-join pattern as the last puzzle, applied to the combined source.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "A hundred and twenty-three events for chrono-portal-mirror. Around sixty for log-sync-svc.\n\nThat's not noise. That's two active services, running in our stack, that don't exist according to anyone who has the ability to say so.\n\nShe's going to want to see this."
+  }
+}

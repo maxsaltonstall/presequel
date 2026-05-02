@@ -1,0 +1,34 @@
+{
+  "id": "03",
+  "concept": "tag-join-left",
+  "brief": {
+    "speaker": "carol",
+    "text": "Inner join excludes the non-match. I need to see the non-match. Change the join type."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "timestamp, message, service_name, team" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "logs" },
+    { "type": "blank",   "id": "join_type", "mode": "typed", "placeholder": "join type" },
+    { "type": "text",    "text": "services ON tags.service = service_name" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "text",    "text": "tags['service'] = 'chrono-portal-mirror'" },
+    { "type": "keyword", "text": "LIMIT" },
+    { "type": "text",    "text": "10" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT timestamp, message, service_name, team FROM logs LEFT JOIN services ON logs.tags['service'] = service_name WHERE logs.tags['service'] = 'chrono-portal-mirror' LIMIT 10",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_low",  "text": "Carol: 'Zero rows — inner join excluded the phantom again. Try LEFT JOIN.'" },
+    { "when": "error",            "text": "Carol: 'Query error. The join type goes between the table names — try LEFT JOIN.'" },
+    { "when": "default",          "text": "Carol: 'LEFT JOIN — keeps all rows from the left table, fills NULLs where no match exists.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "There it is. Null team. Null tier. Null registered_at. Left join doesn't exclude the non-match — it shows it to you, with nothing where the catalog data should be."
+  }
+}

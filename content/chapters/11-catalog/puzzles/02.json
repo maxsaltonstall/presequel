@@ -1,0 +1,34 @@
+{
+  "id": "02",
+  "concept": "tag-join-inner-disappears",
+  "brief": {
+    "speaker": "carol",
+    "text": "Good. Now the one that matters. Same join — filter to chrono-portal-mirror."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "timestamp, message" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "logs" },
+    { "type": "keyword", "text": "JOIN" },
+    { "type": "text",    "text": "services ON tags.service = service_name" },
+    { "type": "keyword", "text": "WHERE" },
+    { "type": "blank",   "id": "filter", "mode": "typed", "placeholder": "filter condition" },
+    { "type": "keyword", "text": "LIMIT" },
+    { "type": "text",    "text": "10" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT timestamp, message FROM logs JOIN services ON logs.tags['service'] = service_name WHERE logs.tags['service'] = 'chrono-portal-mirror' LIMIT 10",
+    "order_sensitive": false
+  },
+  "hints": [
+    { "when": "wrong_count_high", "text": "Carol: 'That service is registered. We're looking for the one that isn't.'" },
+    { "when": "error",            "text": "Carol: 'Query error. Filter on the service tag — tags[\\'service\\'] = \\'chrono-portal-mirror\\'.'" },
+    { "when": "default",          "text": "Carol: 'tags[\\'service\\'] = \\'chrono-portal-mirror\\' — map notation for the service tag.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Zero rows. An inner join only returns rows that match on both sides. No match means no rows. The service exists in logs. It just doesn't exist in the catalog."
+  }
+}
