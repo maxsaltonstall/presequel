@@ -1,0 +1,32 @@
+{
+  "id": "05",
+  "concept": "tag-join-spans",
+  "brief": {
+    "speaker": "carol",
+    "text": "Same question. Different source."
+  },
+  "template": [
+    { "type": "keyword", "text": "SELECT" },
+    { "type": "text",    "text": "tags['service'] as service, team, COUNT(*) as span_count" },
+    { "type": "keyword", "text": "FROM" },
+    { "type": "text",    "text": "spans LEFT JOIN services ON tags.service = service_name" },
+    { "type": "keyword", "text": "GROUP BY" },
+    { "type": "text",    "text": "tags['service'], team" },
+    { "type": "keyword", "text": "ORDER BY" },
+    { "type": "blank",   "id": "order_col", "mode": "typed", "placeholder": "order expression" }
+  ],
+  "expected": {
+    "method": "rows",
+    "sql": "SELECT tags['service'] as service, team, COUNT(*) as span_count FROM spans LEFT JOIN services ON spans.tags['service'] = service_name GROUP BY tags['service'], team ORDER BY span_count DESC",
+    "order_sensitive": true
+  },
+  "hints": [
+    { "when": "error",            "text": "Carol: 'Query error. Order by the count column — span_count DESC.'" },
+    { "when": "different_values", "text": "Carol: 'Wrong order. Use span_count DESC to put the most active first.'" },
+    { "when": "default",          "text": "Carol: 'span_count DESC — most active service first.'" }
+  ],
+  "success": {
+    "speaker": "carol",
+    "text": "Same two names. No team. No registration. One of them I knew about. The other one — that's new."
+  }
+}

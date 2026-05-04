@@ -406,9 +406,57 @@ Run through this list manually before declaring Milestone A shippable. Expected 
 ### Outro
 - [ ] After solving Puzzle 06, outro fires.
 - [ ] Carol's outro mentions "founding documents" and "Carol said not yet."
-- [ ] Chapter 10 does NOT auto-advance (Chapter 11 not yet shipped).
+- [ ] Outro auto-advances to Chapter 11.
 
 ### Reference drawer — Chapter 10
 - [ ] Drawer shows 9 concepts: SELECT, FROM, WHERE, GROUP BY, ORDER BY, DDSQL tags, Time windows, rate(), PTFs.
 - [ ] PTFs entry renders without error, shows available sources table.
+- [ ] Switching between concepts works.
+
+## Chapter 11 — The Catalog (tag joins)
+
+### Boot & navigation
+- [ ] Solving Chapter 10 Puzzle 06 auto-advances to Chapter 11; OR set localStorage state to land directly.
+- [ ] Carol's boss-intro bubble mentions "the second badge."
+- [ ] Progress indicator shows "The Catalog · Puzzle 1 of 7".
+- [ ] Reference drawer shows Tag joins tab alongside the 9 Ch10 concepts.
+
+### Puzzle 01 — JOIN intro
+- [ ] One typed input visible.
+- [ ] Typing `tags.service = service_name` → 10 rows with team column populated. Success: "Every log row now has a team attached."
+- [ ] Wrong path: typing `service = service_name` (no tags. prefix) → error hint.
+
+### Puzzle 02 — Filter + INNER JOIN (phantom disappears)
+- [ ] Typing `tags['service'] = 'chrono-portal-mirror'` → 0 rows → success: "Zero rows. An inner join only returns rows that match on both sides."
+- [ ] Wrong path: real service name → rows returned → hint fires.
+
+### Puzzle 03 — LEFT JOIN introduction
+- [ ] Typing `LEFT JOIN` → 10 rows with NULL service_name and team. Success: "Left join doesn't exclude the non-match."
+- [ ] Wrong path: typing `JOIN` → 0 rows → hint fires.
+
+### Puzzle 04 — Count NULLs across all services
+- [ ] Typing `tags['service'], team` → all services with NULL team for the two ghosts. Success: "Most have a team. Two don't."
+- [ ] Wrong path: missing team in GROUP BY → wrong shape → hint fires.
+
+### Puzzle 05 — Same pattern, spans table
+- [ ] Typing `span_count DESC` → same two ghost services visible. Success: "The other one — that's new."
+- [ ] Wrong path: `service DESC` → wrong order → hint fires.
+
+### Puzzle 06 — Anti-join
+- [ ] Typing `service_name IS NULL` → 2 rows: chrono-portal-mirror and log-sync-svc. Success names log-sync-svc for the first time.
+- [ ] Wrong path: `service_name IS NOT NULL` → registered services only → hint fires.
+
+### Puzzle 07 — Boss fight
+- [ ] Typing `service_name IS NULL` → 2 rows with total_events: chrono-portal-mirror first, log-sync-svc second. Success: "She's going to want to see this."
+- [ ] Wrong path: missing WHERE → all services → hint fires.
+
+### Outro
+- [ ] After solving Puzzle 07, outro fires.
+- [ ] M. walks in without knocking.
+- [ ] Outro ends with "She doesn't say when."
+- [ ] Chapter 11 does NOT auto-advance (Chapter 12 not yet planned).
+
+### Reference drawer — Chapter 11
+- [ ] Drawer shows 10 concepts: SELECT, FROM, WHERE, GROUP BY, ORDER BY, DDSQL tags, Time windows, rate(), PTFs, Tag joins.
+- [ ] Tag joins entry renders without error, shows JOIN vs LEFT JOIN table and anti-join pattern.
 - [ ] Switching between concepts works.
