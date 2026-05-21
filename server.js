@@ -8,6 +8,7 @@ import { allowRequest } from './server/ratelimit.js';
 import { log } from './server/logger.js';
 import { metrics } from './server/metrics.js';
 import { validateEvent, emitMetricFor } from './server/events.js';
+import { withChronoQuerySpan } from './server/spans.js';
 import { extname, join, normalize, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -121,30 +122,42 @@ async function handleRun(req, res) {
   if (!/^[a-z0-9-]+$/.test(chapter)) {
     return sendJson(res, 400, { error: 'invalid chapter id' });
   }
-  const translated = translateBucket(translateTagFilter(translateTimeWindow(translateRate(translatePTF(translateTagJoin(sql))))));
-  const validation = validateSql(translated);
-  if (!validation.ok) {
-    log.warn('query.rejected', { ip, chapter, reason: validation.error, sql_preview: sql.slice(0, 120) });
-    metrics.increment('chrono.query.rejected', { reason: 'security', chapter });
-    return sendJson(res, 400, { error: validation.error });
-  }
-  try {
-    const result = await runQuery(chapter, translated);
-    const durationMs = Number(process.hrtime.bigint() - startNs) / 1e6;
-    log.info('query.ok', {
-      ip, chapter,
-      rows: result.rows?.length ?? 0,
-      truncated: !!result.truncated,
-      duration_ms: Math.round(durationMs),
-    });
-    metrics.increment('chrono.query.run', { chapter, status: 'ok' });
-    metrics.timing('chrono.query.duration', Math.round(durationMs), { chapter });
-    return sendJson(res, 200, result);
-  } catch (err) {
-    log.error('query.duckdb_error', { ip, chapter, reason: err.message });
-    metrics.increment('chrono.query.run', { chapter, status: 'error' });
-    return sendJson(res, 200, { error: err.message });
-  }
+
+  await withChronoQuerySpan(async (span) => {
+    span.setTag('chapter', chapter);
+    span.setTag('sql.length', sql.length);
+
+    const translated = translateBucket(translateTagFilter(translateTimeWindow(translateRate(translatePTF(translateTagJoin(sql))))));
+    const validation = validateSql(translated);
+    span.setTag('validation.ok', validation.ok);
+    if (!validation.ok) {
+      span.setTag('validation.reason', validation.error);
+      log.warn('query.rejected', { ip, chapter, reason: validation.error, sql_preview: sql.slice(0, 120) });
+      metrics.increment('chrono.query.rejected', { reason: 'security', chapter });
+      return sendJson(res, 400, { error: validation.error });
+    }
+
+    try {
+      const result = await runQuery(chapter, translated);
+      const durationMs = Number(process.hrtime.bigint() - startNs) / 1e6;
+      span.setTag('result.rows', result.rows?.length ?? 0);
+      span.setTag('result.truncated', !!result.truncated);
+      log.info('query.ok', {
+        ip, chapter,
+        rows: result.rows?.length ?? 0,
+        truncated: !!result.truncated,
+        duration_ms: Math.round(durationMs),
+      });
+      metrics.increment('chrono.query.run', { chapter, status: 'ok' });
+      metrics.timing('chrono.query.duration', Math.round(durationMs), { chapter });
+      return sendJson(res, 200, result);
+    } catch (err) {
+      span.setTag('error', err);
+      log.error('query.duckdb_error', { ip, chapter, reason: err.message });
+      metrics.increment('chrono.query.run', { chapter, status: 'error' });
+      return sendJson(res, 200, { error: err.message });
+    }
+  });
 }
 
 async function handleEvent(req, res) {
