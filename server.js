@@ -7,6 +7,7 @@ import { translateTagFilter, translateTimeWindow, translateBucket, translateRate
 import { allowRequest } from './server/ratelimit.js';
 import { log } from './server/logger.js';
 import { metrics } from './server/metrics.js';
+import { validateEvent, emitMetricFor } from './server/events.js';
 import { extname, join, normalize, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -146,12 +147,44 @@ async function handleRun(req, res) {
   }
 }
 
+async function handleEvent(req, res) {
+  const ip = req.socket.remoteAddress || 'unknown';
+
+  if (!allowRequest(ip)) {
+    log.warn('event.rate_limited', { ip });
+    metrics.increment('chrono.event.rejected', { reason: 'rate_limit' });
+    return sendJson(res, 429, { error: 'Rate limit exceeded — slow down.' });
+  }
+
+  let body;
+  try { body = await readJsonBody(req); }
+  catch (err) {
+    log.warn('event.body_error', { ip, reason: err.message });
+    metrics.increment('chrono.event.rejected', { reason: 'invalid_body' });
+    return sendJson(res, 400, { error: err.message });
+  }
+
+  const v = validateEvent(body);
+  if (!v.ok) {
+    log.warn('event.rejected', { ip, reason: v.reason, type: body?.type });
+    metrics.increment('chrono.event.rejected', { reason: v.reason });
+    return sendJson(res, 400, { error: v.reason });
+  }
+
+  emitMetricFor(v, metrics);
+  res.writeHead(204).end();
+}
+
 const server = createServer(async (req, res) => {
   if (req.method === 'GET' && req.url === '/health') {
     return sendJson(res, 200, { status: 'ok', uptime: process.uptime() });
   }
+  if (req.method === 'GET' && req.url === '/event') {
+    return res.writeHead(405).end('Method not allowed');
+  }
   if (req.method === 'GET') return serveStatic(req, res);
   if (req.method === 'POST' && req.url === '/run') return handleRun(req, res);
+  if (req.method === 'POST' && req.url === '/event') return handleEvent(req, res);
   res.writeHead(405).end('Method not allowed');
 });
 
