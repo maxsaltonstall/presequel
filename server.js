@@ -171,6 +171,7 @@ async function handleEvent(req, res) {
     return sendJson(res, 400, { error: v.reason });
   }
 
+  log.info('event.ok', { ip, type: v.type, chapter: v.chapter });
   emitMetricFor(v, metrics);
   res.writeHead(204).end();
 }
