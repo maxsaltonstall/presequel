@@ -326,6 +326,7 @@ export async function playPuzzle({ chapterId, puzzle, mechanicMode, onSolved, on
         renderNextButton();
       } else {
         emit('puzzle.failed', { chapter: chapterId, puzzle: puzzle.id, reason: 'wrong_result' });
+        emit('hint.used', { chapter: chapterId, puzzle: puzzle.id });
         const h = selectHint(puzzle.hints, cmp.status);
         pushHint(h.text);
       }
