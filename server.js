@@ -123,7 +123,7 @@ async function handleRun(req, res) {
     return sendJson(res, 400, { error: 'invalid chapter id' });
   }
 
-  await withChronoQuerySpan(async (span) => {
+  return await withChronoQuerySpan(async (span) => {
     span.setTag('chapter', chapter);
     span.setTag('sql.length', sql.length);
 
