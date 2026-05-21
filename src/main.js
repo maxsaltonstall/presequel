@@ -3,6 +3,7 @@ import { clearDialogue, pushBubble } from './dialogue.js';
 import { clearResults } from './results.js';
 import { playPuzzle } from './puzzle.js';
 import { initReference, setChapterForReference } from './reference.js';
+import './rum.js';
 
 const BOOT_CHAPTER = '01-onboarding';
 
