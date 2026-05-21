@@ -42,11 +42,12 @@ async function serveStatic(req, res) {
     if (type.startsWith('text/html')) {
       headers['Content-Security-Policy'] =
         "default-src 'self'; " +
-        "script-src 'self' https://esm.sh; " +
+        "script-src 'self' https://esm.sh https://www.datadoghq-browser-agent.com; " +
         "style-src 'self' 'unsafe-inline'; " +
         "img-src 'self' data:; " +
-        "connect-src 'self' https://esm.sh; " +
+        "connect-src 'self' https://esm.sh https://browser-intake-datadoghq.com https://browser-intake-datadoghq.eu https://browser-intake-us3-datadoghq.com https://browser-intake-us5-datadoghq.com https://browser-intake-ap1-datadoghq.com; " +
         "font-src 'self' data:; " +
+        "worker-src 'self' blob:; " +
         "frame-ancestors 'none'; " +
         "base-uri 'self'; " +
         "form-action 'self'";
