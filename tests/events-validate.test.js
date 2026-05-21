@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { validateEvent } from '../server/events.js';
+import { validateEvent, emitMetricFor } from '../server/events.js';
 
 test('puzzle.attempt requires chapter and puzzle', () => {
   assert.deepEqual(
@@ -64,8 +64,6 @@ test('non-object input rejected', () => {
   assert.equal(validateEvent('x').ok, false);
   assert.equal(validateEvent({}).ok, false);
 });
-
-import { emitMetricFor } from '../server/events.js';
 
 function fakeMetrics() {
   const calls = [];
