@@ -1,6 +1,7 @@
 import { runQuery } from './api.js';
 import { pushHint, pushSuccess, pushBubble } from './dialogue.js';
 import { renderResults, clearResults } from './results.js';
+import { emit } from './telemetry.js';
 
 // ---------- Pure helpers (unit-tested) ----------
 
@@ -288,12 +289,15 @@ export async function playPuzzle({ chapterId, puzzle, mechanicMode, onSolved, on
     : [];
   let busy = false;
   let solved = false;
+  let attemptCount = 0;
   let runBtn;
 
   async function handleSubmit() {
     if (busy || solved) return;
     busy = true;
     if (runBtn) runBtn.disabled = true;
+    attemptCount += 1;
+    emit('puzzle.attempt', { chapter: chapterId, puzzle: puzzle.id });
     try {
       const sql = assembleSql(puzzle.template, blanks);
       const [actual, expected] = await Promise.all([
@@ -304,6 +308,7 @@ export async function playPuzzle({ chapterId, puzzle, mechanicMode, onSolved, on
       onAttempt?.();
 
       if (actual.error) {
+        emit('puzzle.failed', { chapter: chapterId, puzzle: puzzle.id, reason: 'sql_error' });
         const h = selectHint(puzzle.hints, 'error');
         pushHint(h.text);
         return;
@@ -314,11 +319,13 @@ export async function playPuzzle({ chapterId, puzzle, mechanicMode, onSolved, on
       }
       const cmp = compareRows(actual.rows, expected.rows, !!puzzle.expected.order_sensitive);
       if (cmp.status === 'match') {
+        emit('puzzle.solved', { chapter: chapterId, puzzle: puzzle.id, attempts: attemptCount });
         pushSuccess({ speaker: puzzle.success.speaker, text: puzzle.success.text });
         solved = true;
         onSolved?.();
         renderNextButton();
       } else {
+        emit('puzzle.failed', { chapter: chapterId, puzzle: puzzle.id, reason: 'wrong_result' });
         const h = selectHint(puzzle.hints, cmp.status);
         pushHint(h.text);
       }
