@@ -64,3 +64,56 @@ test('non-object input rejected', () => {
   assert.equal(validateEvent('x').ok, false);
   assert.equal(validateEvent({}).ok, false);
 });
+
+import { emitMetricFor } from '../server/events.js';
+
+function fakeMetrics() {
+  const calls = [];
+  return {
+    calls,
+    increment(name, tags) { calls.push({ kind: 'increment', name, tags }); },
+    timing(name, ms, tags) { calls.push({ kind: 'timing', name, ms, tags }); },
+  };
+}
+
+test('emitMetricFor: puzzle.attempt emits counter', () => {
+  const m = fakeMetrics();
+  emitMetricFor({ ok: true, type: 'puzzle.attempt', chapter: 'ch3', puzzle: 'p4' }, m);
+  assert.deepEqual(m.calls, [
+    { kind: 'increment', name: 'chrono.puzzle.attempt', tags: { chapter: 'ch3', puzzle: 'p4' } },
+  ]);
+});
+
+test('emitMetricFor: puzzle.solved emits counter + distribution', () => {
+  const m = fakeMetrics();
+  emitMetricFor({ ok: true, type: 'puzzle.solved', chapter: 'ch3', puzzle: 'p4', attempts: 3 }, m);
+  assert.deepEqual(m.calls, [
+    { kind: 'increment', name: 'chrono.puzzle.solved', tags: { chapter: 'ch3', puzzle: 'p4' } },
+    { kind: 'timing', name: 'chrono.puzzle.attempts_to_solve', ms: 3, tags: { chapter: 'ch3', puzzle: 'p4' } },
+  ]);
+});
+
+test('emitMetricFor: puzzle.failed includes reason tag', () => {
+  const m = fakeMetrics();
+  emitMetricFor({ ok: true, type: 'puzzle.failed', chapter: 'ch3', puzzle: 'p4', reason: 'wrong_result' }, m);
+  assert.deepEqual(m.calls, [
+    { kind: 'increment', name: 'chrono.puzzle.failed', tags: { chapter: 'ch3', puzzle: 'p4', reason: 'wrong_result' } },
+  ]);
+});
+
+test('emitMetricFor: hint.used emits counter', () => {
+  const m = fakeMetrics();
+  emitMetricFor({ ok: true, type: 'hint.used', chapter: 'ch3', puzzle: 'p4' }, m);
+  assert.deepEqual(m.calls, [
+    { kind: 'increment', name: 'chrono.hint.used', tags: { chapter: 'ch3', puzzle: 'p4' } },
+  ]);
+});
+
+test('emitMetricFor: chapter.started / chapter.completed each emit one counter', () => {
+  const m = fakeMetrics();
+  emitMetricFor({ ok: true, type: 'chapter.started', chapter: 'ch3' }, m);
+  emitMetricFor({ ok: true, type: 'chapter.completed', chapter: 'ch3' }, m);
+  assert.equal(m.calls.length, 2);
+  assert.equal(m.calls[0].name, 'chrono.chapter.started');
+  assert.equal(m.calls[1].name, 'chrono.chapter.completed');
+});

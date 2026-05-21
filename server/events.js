@@ -41,3 +41,29 @@ export function validateEvent(body) {
       return bad('unknown_type');
   }
 }
+
+export function emitMetricFor(validated, metrics) {
+  if (!validated || !validated.ok) return;
+  const { type, chapter, puzzle, attempts, reason } = validated;
+  switch (type) {
+    case 'puzzle.attempt':
+      metrics.increment('chrono.puzzle.attempt', { chapter, puzzle });
+      return;
+    case 'puzzle.solved':
+      metrics.increment('chrono.puzzle.solved', { chapter, puzzle });
+      metrics.timing('chrono.puzzle.attempts_to_solve', attempts, { chapter, puzzle });
+      return;
+    case 'puzzle.failed':
+      metrics.increment('chrono.puzzle.failed', { chapter, puzzle, reason });
+      return;
+    case 'hint.used':
+      metrics.increment('chrono.hint.used', { chapter, puzzle });
+      return;
+    case 'chapter.started':
+      metrics.increment('chrono.chapter.started', { chapter });
+      return;
+    case 'chapter.completed':
+      metrics.increment('chrono.chapter.completed', { chapter });
+      return;
+  }
+}
