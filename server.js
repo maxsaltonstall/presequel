@@ -189,6 +189,22 @@ async function handleEvent(req, res) {
   res.writeHead(204).end();
 }
 
+function handleConfig(req, res) {
+  const applicationId = process.env.DD_RUM_APPLICATION_ID || '';
+  const clientToken   = process.env.DD_RUM_CLIENT_TOKEN || '';
+  if (!applicationId || !clientToken) {
+    return sendJson(res, 200, { enabled: false });
+  }
+  return sendJson(res, 200, {
+    applicationId,
+    clientToken,
+    site:    process.env.DD_SITE    || 'datadoghq.com',
+    service: process.env.DD_SERVICE || 'chrono-consulting',
+    env:     process.env.DD_ENV     || 'dev',
+    version: process.env.DD_VERSION || 'unknown',
+  });
+}
+
 const server = createServer(async (req, res) => {
   if (req.method === 'GET' && req.url === '/health') {
     return sendJson(res, 200, { status: 'ok', uptime: process.uptime() });
@@ -196,6 +212,7 @@ const server = createServer(async (req, res) => {
   if (req.method === 'GET' && req.url === '/event') {
     return res.writeHead(405).end('Method not allowed');
   }
+  if (req.method === 'GET' && req.url === '/config') return handleConfig(req, res);
   if (req.method === 'GET') return serveStatic(req, res);
   if (req.method === 'POST' && req.url === '/run') return handleRun(req, res);
   if (req.method === 'POST' && req.url === '/event') return handleEvent(req, res);
