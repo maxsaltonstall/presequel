@@ -3,6 +3,8 @@ import { clearDialogue, pushBubble } from './dialogue.js';
 import { clearResults } from './results.js';
 import { playPuzzle } from './puzzle.js';
 import { initReference, setChapterForReference } from './reference.js';
+import './rum.js';
+import { emit } from './telemetry.js';
 
 const BOOT_CHAPTER = '01-onboarding';
 
@@ -44,6 +46,7 @@ async function runCurrent(state) {
   setProgress(chapter, puzzleId);
 
   if (puzzleId === chapter.puzzle_ids[0]) {
+    emit('chapter.started', { chapter: chapterId });
     pushBubble({ speaker: 'carol', text: chapter.boss_intro });
   }
 
@@ -76,6 +79,7 @@ function wireNextButton(state, chapter) {
       saveState(state);
       await runCurrent(state);
     } else {
+      emit('chapter.completed', { chapter: state.currentChapterId });
       pushBubble({ speaker: 'carol', text: chapter.outro });
       const nextCh = nextChapterId(state.currentChapterId);
       if (nextCh) {

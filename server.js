@@ -7,6 +7,8 @@ import { translateTagFilter, translateTimeWindow, translateBucket, translateRate
 import { allowRequest } from './server/ratelimit.js';
 import { log } from './server/logger.js';
 import { metrics } from './server/metrics.js';
+import { validateEvent, emitMetricFor } from './server/events.js';
+import { withChronoQuerySpan } from './server/spans.js';
 import { extname, join, normalize, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -40,11 +42,12 @@ async function serveStatic(req, res) {
     if (type.startsWith('text/html')) {
       headers['Content-Security-Policy'] =
         "default-src 'self'; " +
-        "script-src 'self' https://esm.sh; " +
+        "script-src 'self' https://esm.sh https://www.datadoghq-browser-agent.com; " +
         "style-src 'self' 'unsafe-inline'; " +
         "img-src 'self' data:; " +
-        "connect-src 'self' https://esm.sh; " +
+        "connect-src 'self' https://esm.sh https://browser-intake-datadoghq.com https://browser-intake-datadoghq.eu https://browser-intake-us3-datadoghq.com https://browser-intake-us5-datadoghq.com https://browser-intake-ap1-datadoghq.com; " +
         "font-src 'self' data:; " +
+        "worker-src 'self' blob:; " +
         "frame-ancestors 'none'; " +
         "base-uri 'self'; " +
         "form-action 'self'";
@@ -120,38 +123,100 @@ async function handleRun(req, res) {
   if (!/^[a-z0-9-]+$/.test(chapter)) {
     return sendJson(res, 400, { error: 'invalid chapter id' });
   }
-  const translated = translateBucket(translateTagFilter(translateTimeWindow(translateRate(translatePTF(translateTagJoin(sql))))));
-  const validation = validateSql(translated);
-  if (!validation.ok) {
-    log.warn('query.rejected', { ip, chapter, reason: validation.error, sql_preview: sql.slice(0, 120) });
-    metrics.increment('chrono.query.rejected', { reason: 'security', chapter });
-    return sendJson(res, 400, { error: validation.error });
+
+  return await withChronoQuerySpan(async (span) => {
+    span.setTag('chapter', chapter);
+    span.setTag('sql.length', sql.length);
+
+    const translated = translateBucket(translateTagFilter(translateTimeWindow(translateRate(translatePTF(translateTagJoin(sql))))));
+    const validation = validateSql(translated);
+    span.setTag('validation.ok', validation.ok);
+    if (!validation.ok) {
+      span.setTag('validation.reason', validation.error);
+      log.warn('query.rejected', { ip, chapter, reason: validation.error, sql_preview: sql.slice(0, 120) });
+      metrics.increment('chrono.query.rejected', { reason: 'security', chapter });
+      return sendJson(res, 400, { error: validation.error });
+    }
+
+    try {
+      const result = await runQuery(chapter, translated);
+      const durationMs = Number(process.hrtime.bigint() - startNs) / 1e6;
+      span.setTag('result.rows', result.rows?.length ?? 0);
+      span.setTag('result.truncated', !!result.truncated);
+      log.info('query.ok', {
+        ip, chapter,
+        rows: result.rows?.length ?? 0,
+        truncated: !!result.truncated,
+        duration_ms: Math.round(durationMs),
+      });
+      metrics.increment('chrono.query.run', { chapter, status: 'ok' });
+      metrics.timing('chrono.query.duration', Math.round(durationMs), { chapter });
+      return sendJson(res, 200, result);
+    } catch (err) {
+      span.setTag('error', err);
+      log.error('query.duckdb_error', { ip, chapter, reason: err.message });
+      metrics.increment('chrono.query.run', { chapter, status: 'error' });
+      return sendJson(res, 200, { error: err.message });
+    }
+  });
+}
+
+async function handleEvent(req, res) {
+  const ip = req.socket.remoteAddress || 'unknown';
+
+  if (!allowRequest(ip)) {
+    log.warn('event.rate_limited', { ip });
+    metrics.increment('chrono.event.rejected', { reason: 'rate_limit' });
+    return sendJson(res, 429, { error: 'Rate limit exceeded — slow down.' });
   }
-  try {
-    const result = await runQuery(chapter, translated);
-    const durationMs = Number(process.hrtime.bigint() - startNs) / 1e6;
-    log.info('query.ok', {
-      ip, chapter,
-      rows: result.rows?.length ?? 0,
-      truncated: !!result.truncated,
-      duration_ms: Math.round(durationMs),
-    });
-    metrics.increment('chrono.query.run', { chapter, status: 'ok' });
-    metrics.timing('chrono.query.duration', Math.round(durationMs), { chapter });
-    return sendJson(res, 200, result);
-  } catch (err) {
-    log.error('query.duckdb_error', { ip, chapter, reason: err.message });
-    metrics.increment('chrono.query.run', { chapter, status: 'error' });
-    return sendJson(res, 200, { error: err.message });
+
+  let body;
+  try { body = await readJsonBody(req); }
+  catch (err) {
+    log.warn('event.body_error', { ip, reason: err.message });
+    metrics.increment('chrono.event.rejected', { reason: 'invalid_body' });
+    return sendJson(res, 400, { error: err.message });
   }
+
+  const v = validateEvent(body);
+  if (!v.ok) {
+    log.warn('event.rejected', { ip, reason: v.reason, type: body?.type });
+    metrics.increment('chrono.event.rejected', { reason: v.reason });
+    return sendJson(res, 400, { error: v.reason });
+  }
+
+  log.info('event.ok', { ip, type: v.type, chapter: v.chapter });
+  emitMetricFor(v, metrics);
+  res.writeHead(204).end();
+}
+
+function handleConfig(req, res) {
+  const applicationId = process.env.DD_RUM_APPLICATION_ID || '';
+  const clientToken   = process.env.DD_RUM_CLIENT_TOKEN || '';
+  if (!applicationId || !clientToken) {
+    return sendJson(res, 200, { enabled: false });
+  }
+  return sendJson(res, 200, {
+    applicationId,
+    clientToken,
+    site:    process.env.DD_SITE    || 'datadoghq.com',
+    service: process.env.DD_SERVICE || 'chrono-consulting',
+    env:     process.env.DD_ENV     || 'dev',
+    version: process.env.DD_VERSION || 'unknown',
+  });
 }
 
 const server = createServer(async (req, res) => {
   if (req.method === 'GET' && req.url === '/health') {
     return sendJson(res, 200, { status: 'ok', uptime: process.uptime() });
   }
+  if (req.method === 'GET' && req.url === '/event') {
+    return res.writeHead(405).end('Method not allowed');
+  }
+  if (req.method === 'GET' && req.url === '/config') return handleConfig(req, res);
   if (req.method === 'GET') return serveStatic(req, res);
   if (req.method === 'POST' && req.url === '/run') return handleRun(req, res);
+  if (req.method === 'POST' && req.url === '/event') return handleEvent(req, res);
   res.writeHead(405).end('Method not allowed');
 });
 
